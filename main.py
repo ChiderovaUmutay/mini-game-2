@@ -27,8 +27,8 @@ class Equipment:
         else:
             self.wear_condition += 10
 
-    def calculate_equipment_efficiency(self, damage):
-        calculated_damage = damage - (damage * self.wear_condition) / 100
+    def calculate_equipment_efficiency(self, equipment):
+        calculated_damage = equipment - (equipment * self.wear_condition) / 100
         return calculated_damage
 
     def __str__(self):
