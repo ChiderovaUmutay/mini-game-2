@@ -35,15 +35,15 @@ class Spaceship:
         validate_attribute(attribute=slot_for_armor,
                            min_val=ship_armor_slot_values.get("min_qty"),
                            max_val=ship_armor_slot_values.get("max_qty"),
-                           message=spaceship_data_messages.get("slots_for_armor_error_message"))
+                           message=spaceship_data_messages.get("armor_slot_error_message"))
         validate_attribute(attribute=slot_for_weapons,
                            min_val=ship_weapon_slot_values.get("min_qty"),
                            max_val=ship_weapon_slot_values.get("max_qty"),
-                           message=spaceship_data_messages.get("slots_for_weapons_error_message"))
+                           message=spaceship_data_messages.get("weapon_slot_error_message"))
         validate_attribute(attribute=slot_for_navigation_devices,
                            min_val=ship_navigation_slot_values.get("min_qty"),
                            max_val=ship_navigation_slot_values.get("max_qty"),
-                           message=spaceship_data_messages.get("slot_for_navigation_devices_error_message"))
+                           message=spaceship_data_messages.get("navigation_slot_error_message"))
 
     def set_armor(self, armor_object):
         if len(self.slot_for_armor) == ship_armor_slot_values.get("max_qty"):
