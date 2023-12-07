@@ -1,7 +1,7 @@
 from random import uniform, randint
 
-from custom_exceptions import EquipmentWornOutError
-from secondary_functions import validate_attribute
+from helpers.custom_exceptions import EquipmentWornOutError
+from helpers.secondary_functions import validate_attribute
 
 
 class Equipment:
