@@ -6,13 +6,13 @@ class EquipmentWornOutError(Exception):
 
 
 class Equipment:
-    def __init__(self, name, taken_capacity, wear_condition=0):
+    def __init__(self, name, taken_capacity):
         self.validate_attribute(attribute=taken_capacity,
                                  min_val=30,
                                  max_val=100,
                                  message="The range of occupied volume should be from 30 to 100")
         self.name = name
-        self.wear_condition = wear_condition
+        self.wear_condition = 0
         self.taken_capacity = taken_capacity
 
     @staticmethod
@@ -40,8 +40,8 @@ class Equipment:
 
 class Weapon(Equipment):
 
-    def __init__(self, name, taken_capacity, min_damage, critical_hit_chance, wear_condition=0):
-        super().__init__(name, taken_capacity, wear_condition=wear_condition)
+    def __init__(self, name, taken_capacity, min_damage, critical_hit_chance):
+        super().__init__(name, taken_capacity)
         self.validate_attribute(attribute=min_damage,
                                  min_val=5,
                                  max_val=40,
