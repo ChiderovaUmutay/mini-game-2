@@ -1,0 +1,2 @@
+class EquipmentWornOutError(Exception):
+    pass
