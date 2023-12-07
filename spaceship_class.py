@@ -1,3 +1,5 @@
+from equipments_classes import Armor, Weapon, Navigator
+
 from helpers.custom_exceptions import FreeSlotError, TotalVolumeError
 from helpers.info_messages import spaceship_data_messages
 from helpers.secondary_functions import validate_attribute
@@ -51,6 +53,18 @@ class Spaceship:
         self.check_spaceship_capacity(equipment=armor_object)
         self.slot_for_armor.append(armor_object)
 
+    def set_weapon(self, weapon_object):
+        if len(self.slot_for_weapons) == ship_weapon_slot_values.get("max_qty"):
+            raise FreeSlotError()
+        self.check_spaceship_capacity(equipment=weapon_object)
+        self.slot_for_weapons.append(weapon_object)
+
+    def set_navigation_devices(self, navigation_object):
+        if len(self.slot_for_navigation_devices) == ship_navigation_slot_values.get("max_qty"):
+            raise FreeSlotError()
+        self.check_spaceship_capacity(equipment=navigation_object)
+        self.slot_for_navigation_devices.append(navigation_object)
+
     def check_spaceship_capacity(self, equipment):
         if sum([self.get_total_occupied_volume_of_equipment(), equipment.taken_capacity]) >= self.spaciousness:
             raise TotalVolumeError()
@@ -58,5 +72,8 @@ class Spaceship:
     def get_total_occupied_volume_of_equipment(self):
         armors_taken_capacity_amount = sum([armor.taken_capacity for armor in self.slot_for_armor])
         weapons_taken_capacity_amount = sum([weapon.taken_capacity for weapon in self.slot_for_weapons])
-        navigation_devices_taken_capacity_amount = sum([navigation_device.taken_capacity for navigation_device in self.slot_for_navigation_devices])
-        return sum([armors_taken_capacity_amount, weapons_taken_capacity_amount, navigation_devices_taken_capacity_amount])
+        navigation_devices_taken_capacity_amount = sum(
+            [navigation_device.taken_capacity for navigation_device in self.slot_for_navigation_devices])
+        return sum(
+            [armors_taken_capacity_amount, weapons_taken_capacity_amount, navigation_devices_taken_capacity_amount])
+    
