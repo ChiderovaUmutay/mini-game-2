@@ -27,7 +27,7 @@ class Equipment:
         else:
             self.wear_condition += 10
 
-    def calculate_damage_taking_into_account_wear(self, damage):
+    def calculate_equipment_wear(self, damage):
         calculated_damage = damage - (damage * self.wear_condition) / 100
         return round(calculated_damage)
 
@@ -72,6 +72,6 @@ class Weapon(Equipment):
         print(damage_info)
 
     def get_calculated_damage(self, damage):
-        calculated_damage = self.calculate_damage_taking_into_account_wear(damage)
+        calculated_damage = self.calculate_equipment_wear(damage)
         super().action()
         return calculated_damage
