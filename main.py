@@ -27,7 +27,7 @@ class Equipment:
         else:
             self.wear_condition += 10
 
-    def calculate_equipment_wear(self, damage):
+    def calculate_equipment_efficiency(self, damage):
         calculated_damage = damage - (damage * self.wear_condition) / 100
         return round(calculated_damage)
 
@@ -72,7 +72,7 @@ class Weapon(Equipment):
         print(damage_info)
 
     def get_calculated_damage(self, damage):
-        calculated_damage = self.calculate_equipment_wear(damage)
+        calculated_damage = self.calculate_equipment_efficiency(damage)
         super().action()
         return calculated_damage
 
@@ -88,7 +88,7 @@ class Armor(Equipment):
                                 message="The range of the number of protection units should be from 1 to 10")
         self.defence = defence
     def action(self):
-        calculated_defence = self.calculate_equipment_wear(self.defence)
+        calculated_defence = self.calculate_equipment_efficiency(self.defence)
         super().action()
         return calculated_defence
 
