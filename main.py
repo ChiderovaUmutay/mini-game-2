@@ -1,4 +1,4 @@
-from random import uniform
+from random import uniform, randint
 
 
 class EquipmentWornOutError(Exception):
@@ -29,7 +29,7 @@ class Equipment:
 
     def calculate_equipment_efficiency(self, damage):
         calculated_damage = damage - (damage * self.wear_condition) / 100
-        return round(calculated_damage)
+        return calculated_damage
 
     def __str__(self):
         equipment_characteristics = f"Equipment name: {self.name}\n" \
@@ -55,9 +55,10 @@ class Weapon(Equipment):
         self.max_damage = self.min_damage + (self.min_damage * 40) / 100
 
     def action(self):
-        damage = round(uniform(self.min_damage, self.max_damage))
+        damage = round(uniform(self.min_damage, self.max_damage), 1)
         if damage <= self.critical_hit_chance:
             critical_damage = (self.max_damage * 40) / 100
+            print("critical_damage")
             return self.get_calculated_damage(critical_damage)
         elif damage <= 15:
             return 0
@@ -96,3 +97,24 @@ class Armor(Equipment):
     def __str__(self):
         super().__str__()
         print(f"The number of armor protection units: {self.defence}")
+
+
+class Navigator(Equipment):
+
+    def __init__(self, name, taken_capacity, accuracy):
+        super().__init__(name, taken_capacity)
+        self.validate_attribute(attribute=accuracy,
+                                min_val=5,
+                                max_val=40,
+                                message="The range of the number of accuracy units should be from 5 to 40")
+        self.accuracy = accuracy
+    def action(self):
+        electromagnetic_surge_probability = randint(1, 100)
+        if electromagnetic_surge_probability <= 20:
+            self.accuracy /= 2
+        calculated_accuracy = self.calculate_equipment_efficiency(self.accuracy)
+        return calculated_accuracy
+
+    def __str__(self):
+        super().__str__()
+        print(f"The number of navigator accuracy units: {self.accuracy}")
