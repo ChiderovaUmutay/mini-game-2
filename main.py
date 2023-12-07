@@ -33,8 +33,8 @@ class Equipment:
 
     def __str__(self):
         equipment_characteristics = f"Equipment name: {self.name}\n" \
-                                    f"Equipment wear condition: {self.wear_condition}\n" \
-                                    f"Equipment taken capacity: {self.taken_capacity}"
+                                    f"Wear condition of equipment: {self.wear_condition}\n" \
+                                    f"Taken capacity of equipment: {self.taken_capacity}"
         print(equipment_characteristics)
 
 
@@ -45,11 +45,11 @@ class Weapon(Equipment):
         self.validate_attribute(attribute=min_damage,
                                  min_val=5,
                                  max_val=40,
-                                 message="Minimum damage range should be from 5 to 40")
+                                 message="The number of units of minimum damage should be from 5 to 40")
         self.validate_attribute(attribute=critical_hit_chance,
                                 min_val=1,
                                 max_val=70,
-                                message="Critical damage range should be from 1 to 70")
+                                message="The number of units of critical chance should be from 1 to 70")
         self.min_damage = min_damage
         self.critical_hit_chance = critical_hit_chance
         self.max_damage = self.min_damage + (self.min_damage * 40) / 100
@@ -66,9 +66,9 @@ class Weapon(Equipment):
 
     def __str__(self):
         super().__str__()
-        damage_info = f"Minimum damage: {self.min_damage}\n" \
-                      f"Maximum damage: {self.max_damage}\n" \
-                      f"Critical hit chance: {self.critical_hit_chance}"
+        damage_info = f"The number of weapon minimum damage units: {self.min_damage}\n" \
+                      f"The number of weapon maximum damage units: {self.max_damage}\n" \
+                      f"The number of weapon critical hit chance units: {self.critical_hit_chance}"
         print(damage_info)
 
     def get_calculated_damage(self, damage):
@@ -95,4 +95,4 @@ class Armor(Equipment):
 
     def __str__(self):
         super().__str__()
-        print(f"Defence: {self.defence}")
+        print(f"The number of armor protection units: {self.defence}")
