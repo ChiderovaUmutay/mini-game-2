@@ -4,7 +4,7 @@ from helpers.custom_exceptions import EquipmentWornOutError
 from helpers.info_messages import equipment_data_messages, weapon_data_messages, armor_data_messages, \
     navigator_data_messages
 from helpers.secondary_functions import validate_attribute
-from helpers.variables import wear_condition_values, damage_values, critical_hit_chance_values, MISFIRE_PERCENTAGE, \
+from helpers.variables import wear_condition_values, weapon_damage_values, weapon_critical_hit_values, MISFIRE_PERCENTAGE, \
     taken_capacity_values, armor_defence_values, navigator_accuracy_values, ELECTROMAGNETIC_SURGE_PERCENTAGE
 
 
@@ -39,12 +39,12 @@ class Weapon(Equipment):
     def __init__(self, name: str, taken_capacity: int, min_damage: int, critical_hit_chance: int) -> None:
         super().__init__(name, taken_capacity)
         validate_attribute(attribute=min_damage,
-                           min_val=damage_values.get("min_val"),
-                           max_val=damage_values.get("max_val"),
+                           min_val=weapon_damage_values.get("min_val"),
+                           max_val=weapon_damage_values.get("max_val"),
                            message=weapon_data_messages.get("min_damage_error_message"))
         validate_attribute(attribute=critical_hit_chance,
-                           min_val=critical_hit_chance_values.get("min_val"),
-                           max_val=critical_hit_chance_values.get("max_val"),
+                           min_val=weapon_critical_hit_values.get("min_val"),
+                           max_val=weapon_critical_hit_values.get("max_val"),
                            message=weapon_data_messages.get("critical_hit_chance_error_message"))
         self.min_damage = min_damage
         self.critical_hit_chance = critical_hit_chance
