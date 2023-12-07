@@ -1,11 +1,12 @@
 from random import uniform, randint
 
 from custom_exceptions import EquipmentWornOutError
+from secondary_functions import validate_attribute
 
 
 class Equipment:
     def __init__(self, name, taken_capacity):
-        self.validate_attribute(attribute=taken_capacity,
+        validate_attribute(attribute=taken_capacity,
                                  min_val=30,
                                  max_val=100,
                                  message="The range of occupied volume should be from 30 to 100")
@@ -13,11 +14,6 @@ class Equipment:
         self.wear_condition = 0
         self.taken_capacity = taken_capacity
 
-    @staticmethod
-    def validate_attribute(attribute, min_val, max_val, message):
-        bool_val = min_val <= attribute <= max_val
-        if bool_val is False:
-            raise ValueError(message)
 
     def action(self):
         if self.wear_condition >= 100:
@@ -40,11 +36,11 @@ class Weapon(Equipment):
 
     def __init__(self, name, taken_capacity, min_damage, critical_hit_chance):
         super().__init__(name, taken_capacity)
-        self.validate_attribute(attribute=min_damage,
+        validate_attribute(attribute=min_damage,
                                  min_val=5,
                                  max_val=40,
                                  message="The number of units of minimum damage should be from 5 to 40")
-        self.validate_attribute(attribute=critical_hit_chance,
+        validate_attribute(attribute=critical_hit_chance,
                                 min_val=1,
                                 max_val=70,
                                 message="The number of units of critical chance should be from 1 to 70")
@@ -81,7 +77,7 @@ class Armor(Equipment):
 
     def __init__(self, name, taken_capacity, defence):
         super().__init__(name, taken_capacity)
-        self.validate_attribute(attribute=defence,
+        validate_attribute(attribute=defence,
                                 min_val=1,
                                 max_val=10,
                                 message="The range of the number of protection units should be from 1 to 10")
@@ -101,7 +97,7 @@ class Navigator(Equipment):
 
     def __init__(self, name, taken_capacity, accuracy):
         super().__init__(name, taken_capacity)
-        self.validate_attribute(attribute=accuracy,
+        validate_attribute(attribute=accuracy,
                                 min_val=5,
                                 max_val=40,
                                 message="The range of the number of accuracy units should be from 5 to 40")
