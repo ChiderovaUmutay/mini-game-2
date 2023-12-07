@@ -75,3 +75,24 @@ class Weapon(Equipment):
         calculated_damage = self.calculate_equipment_wear(damage)
         super().action()
         return calculated_damage
+
+
+
+class Armor(Equipment):
+
+    def __init__(self, name, taken_capacity, defence):
+        super().__init__(name, taken_capacity)
+        self.validate_attribute(attribute=defence,
+                                min_val=1,
+                                max_val=10,
+                                message="The range of the number of protection units should be from 1 to 10")
+        self.defence = defence
+    def action(self):
+        calculated_defence = self.calculate_equipment_wear(self.defence)
+        super().action()
+        return calculated_defence
+
+
+    def __str__(self):
+        super().__str__()
+        print(f"Defence: {self.defence}")
