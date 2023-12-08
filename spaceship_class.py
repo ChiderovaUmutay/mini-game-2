@@ -3,18 +3,17 @@ from typing import Union
 
 from equipments_classes import Armor, Weapon, Navigator
 from helpers.custom_exceptions import FreeSlotError, TotalVolumeError, EquipmentWornOutError
-from helpers.info_messages import spaceship_data_messages
-from helpers.secondary_functions import validate_attribute
+from helpers.info_messages import spaceship_data_messages, \
+    spaceship_characteristic_message, \
+    SPACESHIP_EQUIPMENTS_LIST_HEADER
+from helpers.secondary_functions import validate_attribute, display
 from helpers.variables import ship_health_values, \
     ship_spaciousness_values, \
     ship_accuracy_values, \
     ship_armor_slot_values, \
     ship_weapon_slot_values, \
     ship_navigation_slot_values, \
-    wear_condition_values, \
-    WEAPONS_CHARACTERISTIC_HEADER, \
-    ARMORS_CHARACTERISTIC_HEADER, \
-    NAVIGATORS_CHARACTERISTIC_HEADER
+    wear_condition_values
 
 
 class Spaceship:
@@ -135,25 +134,24 @@ class Spaceship:
         return response
 
     def __str__(self) -> None:
-        ship_characteristics = f"Spaceship name: {self.name}\n" \
-                               f"Spaceship spaciousness: {self.spaciousness}\n" \
-                               f"Spaceship accuracy: {self.accuracy}\n" \
-                               f"Spaceship health: {self.health}\n" \
-                               f"Spaceship defence: {self.defence}"
-        ship_weapons_characteristics = self.get_equipment_characteristics(slot_name=WEAPONS_CHARACTERISTIC_HEADER,
-                                                                          slot_data=self.slot_for_weapons)
-        ship_armors_characteristics = self.get_equipment_characteristics(slot_name=ARMORS_CHARACTERISTIC_HEADER,
-                                                                         slot_data=self.slot_for_armor)
-        ship_navigations_characteristics = self.get_equipment_characteristics(slot_name=NAVIGATORS_CHARACTERISTIC_HEADER,
-                                                                              slot_data=self.slot_for_navigation_devices)
-        print(f"{ship_characteristics}\n"
-              f"{ship_weapons_characteristics}\n"
-              f"{ship_armors_characteristics}\n"
-              f"{ship_navigations_characteristics}\n")
+        ship_characteristics = spaceship_characteristic_message % (self.name,
+                                                                   self.spaciousness,
+                                                                   self.accuracy,
+                                                                   self.health,
+                                                                   self.defence)
+        ship_weapons_characteristics = self.get_equipment_characteristics(slot_data=self.slot_for_weapons)
+        ship_armors_characteristics = self.get_equipment_characteristics(slot_data=self.slot_for_armor)
+        ship_navigations_characteristics = self.get_equipment_characteristics(slot_data=self.slot_for_navigation_devices)
+        display(f"{ship_characteristics}\n"
+                f"{SPACESHIP_EQUIPMENTS_LIST_HEADER}\n"
+                f"{ship_weapons_characteristics}\n"
+                f"{ship_armors_characteristics}\n"
+                f"{ship_navigations_characteristics}\n"
+                f"{'~' * (len(self.name) + 28)}\n\n")
 
     @staticmethod
-    def get_equipment_characteristics(slot_name: str, slot_data: list) -> str:
-        equipment_characteristics = f"{'-' * 15}{slot_name}{'-' * 15}\n"
+    def get_equipment_characteristics(slot_data: list) -> str:
+        equipments_characteristics = ""
         for equipment in slot_data:
-            equipment_characteristics += equipment.__str__()
-        return equipment_characteristics
+            equipments_characteristics += equipment.__str__()
+        return equipments_characteristics

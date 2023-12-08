@@ -2,7 +2,8 @@ from random import choice, randint
 
 from equipments_classes import Weapon, Armor, Navigator
 from helpers.custom_exceptions import TotalVolumeError
-from helpers.info_messages import EQUIPMENT_CREATION_HEADER, EQUIPMENT_BATCH_HEADER
+from helpers.info_messages import EQUIPMENT_CREATION_HEADER, EQUIPMENT_BATCH_HEADER, SPACESHIP_CREATION_HEADER
+from helpers.secondary_functions import display
 from helpers.variables import taken_capacity_values, \
     weapon_damage_values, \
     weapon_critical_hit_values, \
@@ -33,12 +34,12 @@ class Application:
         self.spaceship_2 = None
 
     def create_equipments(self):
-        self.display(EQUIPMENT_CREATION_HEADER)
+        display(EQUIPMENT_CREATION_HEADER)
         list_of_weapon_names_copy = list_of_weapon_names.copy()
         list_of_armor_names_copy = list_of_armor_names.copy()
         list_of_navigation_devices_names_copy = list_of_navigation_names.copy()
         for i in range(1, 21):
-            self.display(EQUIPMENT_BATCH_HEADER % i)
+            display(EQUIPMENT_BATCH_HEADER % i)
             list_of_weapon_names_copy = self.create_weapon(names_list=list_of_weapon_names_copy)
             list_of_armor_names_copy = self.create_armor(names_list=list_of_armor_names_copy)
             list_of_navigation_devices_names_copy = self.create_navigation(
@@ -54,7 +55,7 @@ class Application:
                         taken_capacity=taken_capacity,
                         min_damage=min_damage,
                         critical_hit_chance=critical_hit_chance)
-        self.display(weapon.__str__())
+        display(weapon.__str__())
         self.weapons.append(weapon)
         return names_list
 
@@ -64,7 +65,7 @@ class Application:
         taken_capacity = self.get_taken_capacity_random_value()
         defence = self.get_equipment_parameter_random_value(armor_defence_values)
         armor = Armor(name=armor_name, taken_capacity=taken_capacity, defence=defence)
-        self.display(armor.__str__())
+        display(armor.__str__())
         self.armors.append(armor)
         return names_list
 
@@ -74,7 +75,7 @@ class Application:
         taken_capacity = self.get_taken_capacity_random_value()
         accuracy = self.get_equipment_parameter_random_value(navigator_accuracy_values)
         navigation = Navigator(name=navigation_name, taken_capacity=taken_capacity, accuracy=accuracy)
-        self.display(navigation.__str__())
+        display(navigation.__str__())
         self.navigation_devices.append(navigation)
         return names_list
 
@@ -87,6 +88,7 @@ class Application:
         return randint(parameter_values_dict.get("min_val"), parameter_values_dict.get("max_val"))
 
     def create_spaceships(self):
+        display(SPACESHIP_CREATION_HEADER)
         self.spaceship_1 = self.create_spaceship_object(name_of_the_first_ship)
         self.spaceship_2 = self.create_spaceship_object(name_of_the_second_ship)
         self.set_equipments(self.spaceship_1)
@@ -146,13 +148,9 @@ class Application:
                   f"{self.spaceship_2.name} spaceship health: {round(self.spaceship_2.health)}")
             print("Game over!!!")
 
-    @staticmethod
-    def display(message: str) -> None:
-        print(message)
-
 
 if __name__ == "__main__":
     app = Application()
     app.create_equipments()
     app.create_spaceships()
-    app.run()
+    # app.run()
