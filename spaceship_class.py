@@ -1,16 +1,17 @@
-from equipments_classes import Armor, Weapon, Navigator
+from random import randint
 
-from helpers.custom_exceptions import FreeSlotError, TotalVolumeError
+from helpers.custom_exceptions import FreeSlotError, TotalVolumeError, EquipmentWornOutError
 from helpers.info_messages import spaceship_data_messages
 from helpers.secondary_functions import validate_attribute
 from helpers.variables import ship_health_values, ship_spaciousness_values, ship_accuracy_values, \
-    ship_armor_slot_values, ship_weapon_slot_values, ship_navigation_slot_values
+    ship_armor_slot_values, ship_weapon_slot_values, ship_navigation_slot_values, wear_condition_values
 
 
 class Spaceship:
-    def __init__(self, spaciousness, accuracy, slot_for_armor, slot_for_weapons, slot_for_navigation_devices):
+    def __init__(self, name, spaciousness, accuracy, slot_for_armor, slot_for_weapons, slot_for_navigation_devices):
         parameters = [spaciousness, accuracy, slot_for_armor, slot_for_weapons, slot_for_navigation_devices]
         self.validator(args=parameters)
+        self.name = name
         self.spaciousness = spaciousness
         self.accuracy = accuracy
         self.health = ship_health_values.get("max_val")
@@ -76,4 +77,40 @@ class Spaceship:
             [navigation_device.taken_capacity for navigation_device in self.slot_for_navigation_devices])
         return sum(
             [armors_taken_capacity_amount, weapons_taken_capacity_amount, navigation_devices_taken_capacity_amount])
-    
+
+    def attack(self, ship_of_attack):
+        for weapon in self.slot_for_weapons:
+            if weapon.wear_condition < wear_condition_values.get("max_val"):
+                accuracy_amount = self.accuracy + self.get_navigation_devices_accuracy_amount()
+                hit_probability = randint(1, 100)
+                if hit_probability >= accuracy_amount:
+                    damage = self.get_equipment_action_data(equipment=weapon, message="Weapon equipment is worn out")
+                    ship_of_attack.defend(damage)
+                    if ship_of_attack.health <= 0:
+                        break
+                continue
+        else:
+            print("All weapons are worn out")
+
+    def get_navigation_devices_accuracy_amount(self):
+        return sum(
+            [self.get_equipment_action_data(equipment=navigation_device, message="Navigation equipment is worn out")
+             for navigation_device in self.slot_for_navigation_devices])
+
+    def defend(self, damage):
+        defence_amount = self.defence + self.get_armor_defence_amount()
+        if defence_amount < damage:
+            self.health -= (damage - defence_amount)
+
+    def get_armor_defence_amount(self):
+        return sum([self.get_equipment_action_data(equipment=armor, message="Armor equipment is worn out")
+                    for armor in self.slot_for_armor])
+
+    @staticmethod
+    def get_equipment_action_data(equipment, message) -> int or None:
+        response = 0
+        try:
+            response = equipment.action()
+        except EquipmentWornOutError:
+            print(message)
+        return response
