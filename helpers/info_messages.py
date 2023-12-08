@@ -1,8 +1,8 @@
 equipment_data_messages = {
     "taken_capacity_error_message": "The number of units of occupied volume should be from 30 to 100",
-    "info_message": "Equipment name: {}\n"
+    "info_message": "\nEquipment name: {}\n"
                     "Wear condition of equipment: {}\n"
-                    "Taken capacity of equipment: {}"
+                    "Taken capacity of equipment: {}\n"
 }
 
 weapon_data_messages = {
@@ -10,17 +10,17 @@ weapon_data_messages = {
     "critical_hit_chance_error_message": "The number of units of critical chance should be from 1 to 70",
     "info_message": "The number of weapon minimum damage units: {}\n"
                     "The number of weapon maximum damage units: {}\n"
-                    "The number of weapon critical hit chance units: {}"
+                    "The number of weapon critical hit chance units: {}\n"
 }
 
 armor_data_messages = {
     "defense_error_message": "The range of the number of protection units should be from 1 to 10",
-    "info_message": "The number of armor protection units: {}"
+    "info_message": "The number of armor protection units: {}\n"
 }
 
 navigator_data_messages = {
     "accuracy_error_message": "The range of the number of accuracy units should be from 5 to 40",
-    "info_message": "The number of navigator accuracy units: {}"
+    "info_message": "The number of navigator accuracy units: {}\n"
 }
 
 spaceship_data_messages = {
