@@ -119,8 +119,30 @@ class Application:
         }
         return equipments_data.get(equipment_type)
 
+    def run(self):
+        round_num = 0
+        while round_num <= 20:
+            print(f"{'=' * 15}Round #{round_num}{'=' * 15}")
+            round_num += 1
+            print(f"{self.spaceship_1.name} spaceship is shooting 💥\n\n")
+            self.spaceship_1.attack(self.spaceship_2)
+            if self.spaceship_2.health > 0:
+                print(f"{self.spaceship_2.name} spaceship is shooting 💥\n\n")
+                self.spaceship_2.attack(self.spaceship_1)
+                if self.spaceship_1.health < 0:
+                    print(f"{self.spaceship_2.name} WON!")
+                    break
+            else:
+                print(f"{self.spaceship_1.name} WON!")
+                break
+        else:
+            print(f"{self.spaceship_1.name} spaceship health: {round(self.spaceship_1.health)}\n"
+                  f"{self.spaceship_2.name} spaceship health: {round(self.spaceship_2.health)}")
+            print("Game over!!!")
+
 
 if __name__ == "__main__":
     app = Application()
     app.create_equipments()
     app.create_spaceships()
+    app.run()
