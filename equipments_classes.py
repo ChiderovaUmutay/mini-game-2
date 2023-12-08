@@ -1,11 +1,19 @@
 from random import uniform, randint
 
 from helpers.custom_exceptions import EquipmentWornOutError
-from helpers.info_messages import equipment_data_messages, weapon_data_messages, armor_data_messages, \
+from helpers.info_messages import equipment_data_messages, \
+    weapon_data_messages, \
+    armor_data_messages, \
     navigator_data_messages
 from helpers.secondary_functions import validate_attribute
-from helpers.variables import wear_condition_values, weapon_damage_values, weapon_critical_hit_values, MISFIRE_PERCENTAGE, \
-    taken_capacity_values, armor_defence_values, navigator_accuracy_values, ELECTROMAGNETIC_SURGE_PERCENTAGE
+from helpers.variables import taken_capacity_values, \
+    wear_condition_values, \
+    weapon_damage_values, \
+    weapon_critical_hit_values, \
+    armor_defence_values, \
+    navigator_accuracy_values, \
+    MISFIRE_PERCENTAGE, \
+    ELECTROMAGNETIC_SURGE_PERCENTAGE
 
 
 class Equipment:
@@ -28,10 +36,9 @@ class Equipment:
         calculated_efficiency = equipment - (equipment * self.wear_condition) / 100
         return calculated_efficiency
 
-    def __str__(self) -> None:
-        print(equipment_data_messages.get("info_message").format(self.name,
-                                                                 self.wear_condition,
-                                                                 self.taken_capacity))
+    def __str__(self) -> str:
+        equipment_characteristics = f"{equipment_data_messages.get('info_message').format(self.name, self.wear_condition, self.taken_capacity)}"
+        return equipment_characteristics
 
 
 class Weapon(Equipment):
@@ -60,11 +67,9 @@ class Weapon(Equipment):
         else:
             return self.get_calculated_damage(damage)
 
-    def __str__(self) -> None:
-        super().__str__()
-        print(weapon_data_messages.get("info_message").format(self.min_damage,
-                                                              self.max_damage,
-                                                              self.critical_hit_chance))
+    def __str__(self) -> str:
+        weapon_characteristics = f"{super().__str__()}{weapon_data_messages.get('info_message').format(self.min_damage, self.max_damage, self.critical_hit_chance)}"
+        return weapon_characteristics
 
     def get_calculated_damage(self, damage: int or float) -> int or float:
         calculated_damage = self.calculate_equipment_efficiency(damage)
@@ -87,9 +92,9 @@ class Armor(Equipment):
         super().action()
         return calculated_defence
 
-    def __str__(self) -> None:
-        super().__str__()
-        print(armor_data_messages.get("info_message").format(self.defence))
+    def __str__(self) -> str:
+        armor_characteristics = f"{super().__str__()}{armor_data_messages.get('info_message').format(self.defence)}"
+        return armor_characteristics
 
 
 class Navigator(Equipment):
@@ -110,6 +115,6 @@ class Navigator(Equipment):
         super().action()
         return calculated_accuracy
 
-    def __str__(self) -> None:
-        super().__str__()
-        print(navigator_data_messages.get("info_message").format(self.accuracy))
+    def __str__(self) -> str:
+        navigator_characteristics = f"{super().__str__()}{navigator_data_messages.get('info_message').format(self.accuracy)}"
+        return navigator_characteristics
