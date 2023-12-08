@@ -114,3 +114,27 @@ class Spaceship:
         except EquipmentWornOutError:
             print(message)
         return response
+
+    def __str__(self):
+        ship_characteristics = f"Spaceship name: {self.name}\n" \
+                               f"Spaceship spaciousness: {self.spaciousness}\n" \
+                               f"Spaceship accuracy: {self.accuracy}\n" \
+                               f"Spaceship health: {self.health}\n" \
+                               f"Spaceship defence: {self.defence}"
+        ship_weapons_characteristics = self.get_equipment_characteristics(slot_name="Weapons",
+                                                                          slot_data=self.slot_for_weapons)
+        ship_armors_characteristics = self.get_equipment_characteristics(slot_name="Armors",
+                                                                         slot_data=self.slot_for_armor)
+        ship_navigations_characteristics = self.get_equipment_characteristics(slot_name="Navigation devices",
+                                                                              slot_data=self.slot_for_navigation_devices)
+        print(f"{ship_characteristics}\n"
+              f"{ship_weapons_characteristics}\n"
+              f"{ship_armors_characteristics}\n"
+              f"{ship_navigations_characteristics}\n")
+
+    @staticmethod
+    def get_equipment_characteristics(slot_name, slot_data):
+        equipment_characteristics = f"{'-' * 15}{slot_name}{'-' * 15}\n"
+        for equipment in slot_data:
+            equipment_characteristics += equipment.__str__()
+        return equipment_characteristics
