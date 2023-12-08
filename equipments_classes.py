@@ -107,6 +107,7 @@ class Navigator(Equipment):
         if electromagnetic_surge_probability <= ELECTROMAGNETIC_SURGE_PERCENTAGE:
             self.accuracy /= 2
         calculated_accuracy = self.calculate_equipment_efficiency(self.accuracy)
+        super().action()
         return calculated_accuracy
 
     def __str__(self) -> None:
