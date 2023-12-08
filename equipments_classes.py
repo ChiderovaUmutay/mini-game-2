@@ -4,7 +4,8 @@ from helpers.custom_exceptions import EquipmentWornOutError
 from helpers.info_messages import equipment_data_messages, \
     weapon_data_messages, \
     armor_data_messages, \
-    navigator_data_messages
+    navigator_data_messages, \
+    equipment_header_characteristic
 from helpers.secondary_functions import validate_attribute
 from helpers.variables import taken_capacity_values, \
     wear_condition_values, \
@@ -13,7 +14,10 @@ from helpers.variables import taken_capacity_values, \
     armor_defence_values, \
     navigator_accuracy_values, \
     MISFIRE_PERCENTAGE, \
-    ELECTROMAGNETIC_SURGE_PERCENTAGE
+    ELECTROMAGNETIC_SURGE_PERCENTAGE, \
+    NAVIGATOR_EQUIPMENT_TYPE, \
+    ARMOR_EQUIPMENT_TYPE,\
+    WEAPON_EQUIPMENT_TYPE
 
 
 class Equipment:
@@ -68,7 +72,9 @@ class Weapon(Equipment):
             return self.get_calculated_damage(damage)
 
     def __str__(self) -> str:
-        weapon_characteristics = f"{super().__str__()}{weapon_data_messages.get('info_message').format(self.min_damage, self.max_damage, self.critical_hit_chance)}"
+        weapon_characteristics = f"{equipment_header_characteristic.get(WEAPON_EQUIPMENT_TYPE)}" \
+                                 f"{super().__str__()}" \
+                                 f"{weapon_data_messages.get('info_message').format(self.min_damage, self.max_damage, self.critical_hit_chance)}"
         return weapon_characteristics
 
     def get_calculated_damage(self, damage: int or float) -> int or float:
@@ -93,7 +99,9 @@ class Armor(Equipment):
         return calculated_defence
 
     def __str__(self) -> str:
-        armor_characteristics = f"{super().__str__()}{armor_data_messages.get('info_message').format(self.defence)}"
+        armor_characteristics = f"{equipment_header_characteristic.get(ARMOR_EQUIPMENT_TYPE)}" \
+                                f"{super().__str__()}" \
+                                f"{armor_data_messages.get('info_message').format(self.defence)}"
         return armor_characteristics
 
 
@@ -116,5 +124,7 @@ class Navigator(Equipment):
         return calculated_accuracy
 
     def __str__(self) -> str:
-        navigator_characteristics = f"{super().__str__()}{navigator_data_messages.get('info_message').format(self.accuracy)}"
+        navigator_characteristics = f"{equipment_header_characteristic.get(NAVIGATOR_EQUIPMENT_TYPE)}" \
+                                    f"{super().__str__()}" \
+                                    f"{navigator_data_messages.get('info_message').format(self.accuracy)}"
         return navigator_characteristics

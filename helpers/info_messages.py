@@ -30,3 +30,12 @@ spaceship_data_messages = {
     "weapon_slot_error_message": "The number of weapon slots for a spaceship should be from 1 to 3",
     "navigation_slot_error_message": "The number of slots for navigation devices for a spaceship should be from 1 to 2"
 }
+
+EQUIPMENT_CREATION_HEADER = f"{'=' * 20}🛠 Equipment creation 🛠{'=' * 20}\n"
+EQUIPMENT_BATCH_HEADER = f"{'~' * 10}%s batch of equipment{'~' * 10}\n"
+
+equipment_header_characteristic = {
+    "weapon": "🚀 Weapon 🚀\n",
+    "armor": "🛡 Armor 🛡\n",
+    "navigator": "🧭 Navigator 🧭\n"
+}

@@ -2,6 +2,7 @@ from random import choice, randint
 
 from equipments_classes import Weapon, Armor, Navigator
 from helpers.custom_exceptions import TotalVolumeError
+from helpers.info_messages import EQUIPMENT_CREATION_HEADER, EQUIPMENT_BATCH_HEADER
 from helpers.variables import taken_capacity_values, \
     weapon_damage_values, \
     weapon_critical_hit_values, \
@@ -32,10 +33,12 @@ class Application:
         self.spaceship_2 = None
 
     def create_equipments(self):
+        self.display(EQUIPMENT_CREATION_HEADER)
         list_of_weapon_names_copy = list_of_weapon_names.copy()
         list_of_armor_names_copy = list_of_armor_names.copy()
         list_of_navigation_devices_names_copy = list_of_navigation_names.copy()
-        for _ in range(1, 21):
+        for i in range(1, 21):
+            self.display(EQUIPMENT_BATCH_HEADER % i)
             list_of_weapon_names_copy = self.create_weapon(names_list=list_of_weapon_names_copy)
             list_of_armor_names_copy = self.create_armor(names_list=list_of_armor_names_copy)
             list_of_navigation_devices_names_copy = self.create_navigation(
@@ -51,6 +54,7 @@ class Application:
                         taken_capacity=taken_capacity,
                         min_damage=min_damage,
                         critical_hit_chance=critical_hit_chance)
+        self.display(weapon.__str__())
         self.weapons.append(weapon)
         return names_list
 
@@ -60,6 +64,7 @@ class Application:
         taken_capacity = self.get_taken_capacity_random_value()
         defence = self.get_equipment_parameter_random_value(armor_defence_values)
         armor = Armor(name=armor_name, taken_capacity=taken_capacity, defence=defence)
+        self.display(armor.__str__())
         self.armors.append(armor)
         return names_list
 
@@ -69,6 +74,7 @@ class Application:
         taken_capacity = self.get_taken_capacity_random_value()
         accuracy = self.get_equipment_parameter_random_value(navigator_accuracy_values)
         navigation = Navigator(name=navigation_name, taken_capacity=taken_capacity, accuracy=accuracy)
+        self.display(navigation.__str__())
         self.navigation_devices.append(navigation)
         return names_list
 
@@ -119,7 +125,7 @@ class Application:
         }
         return equipments_data.get(equipment_type)
 
-    def run(self):
+    def run(self) -> None:
         round_num = 0
         while round_num <= 20:
             print(f"{'=' * 15}Round #{round_num}{'=' * 15}")
@@ -139,6 +145,10 @@ class Application:
             print(f"{self.spaceship_1.name} spaceship health: {round(self.spaceship_1.health)}\n"
                   f"{self.spaceship_2.name} spaceship health: {round(self.spaceship_2.health)}")
             print("Game over!!!")
+
+    @staticmethod
+    def display(message: str) -> None:
+        print(message)
 
 
 if __name__ == "__main__":
