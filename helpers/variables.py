@@ -62,10 +62,6 @@ ship_navigation_slot_values = {
     "max_qty": 2
 }
 
-WEAPONS_CHARACTERISTIC_HEADER = "Weapons"
-ARMORS_CHARACTERISTIC_HEADER = "Armors"
-NAVIGATORS_CHARACTERISTIC_HEADER = "Navigation devices"
-
 WEAPON_EQUIPMENT_TYPE = "weapon"
 ARMOR_EQUIPMENT_TYPE = "armor"
 NAVIGATOR_EQUIPMENT_TYPE = "navigator"
