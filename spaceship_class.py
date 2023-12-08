@@ -107,8 +107,6 @@ class Spaceship:
                 if hit_probability >= accuracy_amount:
                     damage = self.get_equipment_action_data(equipment=weapon, message="Weapon equipment is worn out")
                     ship_of_attack.defend(damage)
-                    if ship_of_attack.health <= 0:
-                        break
                 continue
         else:
             print("All weapons are worn out")
