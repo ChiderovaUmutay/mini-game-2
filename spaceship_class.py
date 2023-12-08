@@ -14,19 +14,16 @@ class Spaceship:
                  slot_for_armor=None,
                  slot_for_weapons=None,
                  slot_for_navigation_devices=None):
-        slot_for_armor = [] if slot_for_armor is None else slot_for_weapons
-        slot_for_weapons = [] if slot_for_weapons is None else slot_for_weapons
-        slot_for_navigation_devices = [] if slot_for_navigation_devices is None else slot_for_navigation_devices
         parameters = [spaciousness, accuracy, slot_for_armor, slot_for_weapons, slot_for_navigation_devices]
         self.validator(args=parameters)
         self.name = name
         self.spaciousness = spaciousness
         self.accuracy = accuracy
         self.health = ship_health_values.get("max_val")
-        self.slot_for_armor = slot_for_armor
-        self.slot_for_weapons = slot_for_weapons
-        self.slot_for_navigation_devices = slot_for_navigation_devices
-        self.defence = (1 / (self.spaciousness * len(self.slot_for_armor))) * 10 ** 4
+        self.slot_for_armor = [] if slot_for_armor is None else slot_for_weapons
+        self.slot_for_weapons = [] if slot_for_weapons is None else slot_for_weapons
+        self.slot_for_navigation_devices = [] if slot_for_navigation_devices is None else slot_for_navigation_devices
+        self.defence = self.calculate_defence_value() if self.slot_for_armor else 0
 
     @staticmethod
     def validator(args):
@@ -43,18 +40,24 @@ class Spaceship:
                            min_val=ship_accuracy_values.get("min_val"),
                            max_val=ship_accuracy_values.get("max_val"),
                            message=spaceship_data_messages.get("accuracy_error_message"))
-        validate_attribute(attribute=slot_for_armor,
-                           min_val=ship_armor_slot_values.get("min_qty"),
-                           max_val=ship_armor_slot_values.get("max_qty"),
-                           message=spaceship_data_messages.get("armor_slot_error_message"))
-        validate_attribute(attribute=slot_for_weapons,
-                           min_val=ship_weapon_slot_values.get("min_qty"),
-                           max_val=ship_weapon_slot_values.get("max_qty"),
-                           message=spaceship_data_messages.get("weapon_slot_error_message"))
-        validate_attribute(attribute=slot_for_navigation_devices,
-                           min_val=ship_navigation_slot_values.get("min_qty"),
-                           max_val=ship_navigation_slot_values.get("max_qty"),
-                           message=spaceship_data_messages.get("navigation_slot_error_message"))
+        if slot_for_armor:
+            validate_attribute(attribute=slot_for_armor,
+                               min_val=ship_armor_slot_values.get("min_qty"),
+                               max_val=ship_armor_slot_values.get("max_qty"),
+                               message=spaceship_data_messages.get("armor_slot_error_message"))
+        if slot_for_weapons:
+            validate_attribute(attribute=slot_for_weapons,
+                               min_val=ship_weapon_slot_values.get("min_qty"),
+                               max_val=ship_weapon_slot_values.get("max_qty"),
+                               message=spaceship_data_messages.get("weapon_slot_error_message"))
+        if slot_for_navigation_devices:
+            validate_attribute(attribute=slot_for_navigation_devices,
+                               min_val=ship_navigation_slot_values.get("min_qty"),
+                               max_val=ship_navigation_slot_values.get("max_qty"),
+                               message=spaceship_data_messages.get("navigation_slot_error_message"))
+
+    def calculate_defence_value(self):
+        return (1 / (self.spaciousness * len(self.slot_for_armor))) * 10 ** 4
 
     def set_armor(self, armor_object):
         if len(self.slot_for_armor) == ship_armor_slot_values.get("max_qty"):
