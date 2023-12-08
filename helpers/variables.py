@@ -65,3 +65,80 @@ ship_navigation_slot_values = {
 WEAPONS_CHARACTERISTIC_HEADER = "Weapons"
 ARMORS_CHARACTERISTIC_HEADER = "Armors"
 NAVIGATORS_CHARACTERISTIC_HEADER = "Navigation devices"
+
+WEAPON_EQUIPMENT_TYPE = "weapon"
+ARMOR_EQUIPMENT_TYPE = "armor"
+NAVIGATOR_EQUIPMENT_TYPE = "navigator"
+
+name_of_the_first_ship = "Stellar Vanguard"
+name_of_the_second_ship = "Nebula Seraphim"
+
+list_of_weapon_names = [
+    "Quantum Blaster Cannon",
+    "NovaStrike Pulse Emitter",
+    "Starburst Annihilator",
+    "Celestial Wrath Beam",
+    "IonStorm Disruptor",
+    "Galactic Fury Launcher",
+    "Photon Siege Cannon",
+    "VoidCleaver Laser Array",
+    "Solar Flare Projector",
+    "AstroStrike Railgun",
+    "WarpFire Torpedo System",
+    "Cosmic Havoc Gatling",
+    "GravityWell Annihilator",
+    "NovaBolt Particle Beam",
+    "PlasmaStorm Repeater",
+    "Quantum Surge Cannon",
+    "HyperNova Destructor",
+    "DarkMatter Obliterator",
+    "NebulaRift Missile Launcher",
+    "Electrum Beam Blaster"
+
+]
+
+list_of_armor_names = [
+    "Quantum Shield Matrix",
+    "NebulaGuard Alloy",
+    "StarFortress Plating",
+    "Celestial Sentinel Shell",
+    "IonStorm Armorweave",
+    "Galactic Bastion Plate",
+    "Photon Titan Matrix",
+    "VoidGuardian Alloy",
+    "Solarium Deflector Array",
+    "AstroSteel Reinforcement",
+    "WarpShield Composite",
+    "Cosmic Sentinel Plating",
+    "GravityForge Armor",
+    "NovaGuard Matrix",
+    "PlasmaWard Shell",
+    "QuantumForce Alloy",
+    "HyperNova Defense Grid",
+    "DarkMatter Shield Matrix",
+    "NebulaForge Armorweave",
+    "Electrum Bastion Plate"
+]
+
+list_of_navigation_names = [
+    "StellarGuidance Navigator",
+    "QuantumPilot Interface",
+    "CelestialChart System",
+    "AstroNav Matrix",
+    "StarSailor Guidance Unit",
+    "NebulaSync Navigator",
+    "CosmoTrack Module",
+    "GalacticWayfinder System",
+    "NaviSphere Beacon",
+    "WarpMaster Control Hub",
+    "SolarWind Navigator",
+    "InterstellarPlot Console",
+    "HyperJourney Calculator",
+    "VoidNavigator Beacon",
+    "GalaxySync Positioning System",
+    "PlasmaPulse NaviCore",
+    "AstroLocus Guidance Matrix",
+    "NovaNav Beacon Array",
+    "SpaceFlow Navigator",
+    "QuantumCompass Interface"
+]
