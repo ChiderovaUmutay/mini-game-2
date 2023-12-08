@@ -8,7 +8,15 @@ from helpers.variables import ship_health_values, ship_spaciousness_values, ship
 
 
 class Spaceship:
-    def __init__(self, name, spaciousness, accuracy, slot_for_armor, slot_for_weapons, slot_for_navigation_devices):
+    def __init__(self, name,
+                 spaciousness,
+                 accuracy,
+                 slot_for_armor=None,
+                 slot_for_weapons=None,
+                 slot_for_navigation_devices=None):
+        slot_for_armor = [] if slot_for_armor is None else slot_for_weapons
+        slot_for_weapons = [] if slot_for_weapons is None else slot_for_weapons
+        slot_for_navigation_devices = [] if slot_for_navigation_devices is None else slot_for_navigation_devices
         parameters = [spaciousness, accuracy, slot_for_armor, slot_for_weapons, slot_for_navigation_devices]
         self.validator(args=parameters)
         self.name = name
