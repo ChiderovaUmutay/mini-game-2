@@ -61,3 +61,7 @@ ship_navigation_slot_values = {
     "min_qty": 1,
     "max_qty": 2
 }
+
+WEAPONS_CHARACTERISTIC_HEADER = "Weapons"
+ARMORS_CHARACTERISTIC_HEADER = "Armors"
+NAVIGATORS_CHARACTERISTIC_HEADER = "Navigation devices"

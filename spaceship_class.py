@@ -11,7 +11,10 @@ from helpers.variables import ship_health_values, \
     ship_armor_slot_values, \
     ship_weapon_slot_values, \
     ship_navigation_slot_values, \
-    wear_condition_values
+    wear_condition_values, \
+    WEAPONS_CHARACTERISTIC_HEADER, \
+    ARMORS_CHARACTERISTIC_HEADER, \
+    NAVIGATORS_CHARACTERISTIC_HEADER
 
 
 class Spaceship:
@@ -139,11 +142,11 @@ class Spaceship:
                                f"Spaceship accuracy: {self.accuracy}\n" \
                                f"Spaceship health: {self.health}\n" \
                                f"Spaceship defence: {self.defence}"
-        ship_weapons_characteristics = self.get_equipment_characteristics(slot_name="Weapons",
+        ship_weapons_characteristics = self.get_equipment_characteristics(slot_name=WEAPONS_CHARACTERISTIC_HEADER,
                                                                           slot_data=self.slot_for_weapons)
-        ship_armors_characteristics = self.get_equipment_characteristics(slot_name="Armors",
+        ship_armors_characteristics = self.get_equipment_characteristics(slot_name=ARMORS_CHARACTERISTIC_HEADER,
                                                                          slot_data=self.slot_for_armor)
-        ship_navigations_characteristics = self.get_equipment_characteristics(slot_name="Navigation devices",
+        ship_navigations_characteristics = self.get_equipment_characteristics(slot_name=NAVIGATORS_CHARACTERISTIC_HEADER,
                                                                               slot_data=self.slot_for_navigation_devices)
         print(f"{ship_characteristics}\n"
               f"{ship_weapons_characteristics}\n"
