@@ -33,7 +33,7 @@ class Spaceship:
         self.slot_for_weapons = [] if slot_for_weapons is None else slot_for_weapons
         self.slot_for_navigation_devices = [] if slot_for_navigation_devices is None else slot_for_navigation_devices
         self.defence = self.calculate_defence_value() if self.slot_for_armor else 0
-
+        self.spaceship_set_equipment_false_info = []
     @staticmethod
     def validator(args: list) -> None:
         spaciousness, \
@@ -142,6 +142,8 @@ class Spaceship:
         ship_weapons_characteristics = self.get_equipment_characteristics(slot_data=self.slot_for_weapons)
         ship_armors_characteristics = self.get_equipment_characteristics(slot_data=self.slot_for_armor)
         ship_navigations_characteristics = self.get_equipment_characteristics(slot_data=self.slot_for_navigation_devices)
+        equipment_dont_set_on_ship_data = self.get_didnt_fit_equipments_info(self.spaceship_set_equipment_false_info)\
+            if self.spaceship_set_equipment_false_info else None
         display(f"{ship_characteristics}\n"
                 f"{SPACESHIP_EQUIPMENTS_LIST_HEADER}\n"
                 f"{ship_weapons_characteristics}\n"
@@ -155,3 +157,10 @@ class Spaceship:
         for equipment in slot_data:
             equipments_characteristics += equipment.__str__()
         return equipments_characteristics
+
+    @staticmethod
+    def get_didnt_fit_equipments_info(message_data):
+        didnt_fit_equipments_info = ""
+        for message in message_data:
+            didnt_fit_equipments_info += message
+        return didnt_fit_equipments_info

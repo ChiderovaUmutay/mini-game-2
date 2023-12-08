@@ -2,7 +2,8 @@ from random import choice, randint
 
 from equipments_classes import Weapon, Armor, Navigator
 from helpers.custom_exceptions import TotalVolumeError
-from helpers.info_messages import EQUIPMENT_CREATION_HEADER, EQUIPMENT_BATCH_HEADER, SPACESHIP_CREATION_HEADER
+from helpers.info_messages import EQUIPMENT_CREATION_HEADER, EQUIPMENT_BATCH_HEADER, SPACESHIP_CREATION_HEADER, \
+    SPACESHIP_SET_EQUIPMENTS_FALSE_MESSAGE
 from helpers.secondary_functions import display
 from helpers.variables import taken_capacity_values, \
     weapon_damage_values, \
@@ -116,7 +117,9 @@ class Application:
             try:
                 set_method(equipment)
             except TotalVolumeError:
-                print(f"There is no free space left on the ship for this {equipment.name} {equipment_type}")
+                spaceship.spaceship_set_equipment_false_info.append(SPACESHIP_SET_EQUIPMENTS_FALSE_MESSAGE.format(spaceship.name,
+                                                                                                                  equipment.name,
+                                                                                                                  equipment_type))
 
     def get_equipments_data_by_type(self, spaceship, equipment_type):
         equipments_data = {
