@@ -5,7 +5,7 @@ from equipments_classes import Armor, Weapon, Navigator
 from helpers.custom_exceptions import FreeSlotError, TotalVolumeError, EquipmentWornOutError
 from helpers.info_messages import spaceship_data_messages, \
     spaceship_characteristic_message, \
-    SPACESHIP_EQUIPMENTS_LIST_HEADER
+    SPACESHIP_EQUIPMENTS_LIST_HEADER, SPACESHIP_SET_EQUIPMENTS_FALSE_HEADER
 from helpers.secondary_functions import validate_attribute, display
 from helpers.variables import ship_health_values, \
     ship_spaciousness_values, \
@@ -21,8 +21,8 @@ class Spaceship:
                  spaciousness: int,
                  accuracy: int,
                  slot_for_armor: list or None = None,
-                 slot_for_weapons: list or None =None,
-                 slot_for_navigation_devices: list or None =None) -> None:
+                 slot_for_weapons: list or None = None,
+                 slot_for_navigation_devices: list or None = None) -> None:
         parameters = [spaciousness, accuracy, slot_for_armor, slot_for_weapons, slot_for_navigation_devices]
         self.validator(args=parameters)
         self.name = name
@@ -34,6 +34,7 @@ class Spaceship:
         self.slot_for_navigation_devices = [] if slot_for_navigation_devices is None else slot_for_navigation_devices
         self.defence = self.calculate_defence_value() if self.slot_for_armor else 0
         self.spaceship_set_equipment_false_info = []
+
     @staticmethod
     def validator(args: list) -> None:
         spaciousness, \
@@ -141,15 +142,19 @@ class Spaceship:
                                                                    self.defence)
         ship_weapons_characteristics = self.get_equipment_characteristics(slot_data=self.slot_for_weapons)
         ship_armors_characteristics = self.get_equipment_characteristics(slot_data=self.slot_for_armor)
-        ship_navigations_characteristics = self.get_equipment_characteristics(slot_data=self.slot_for_navigation_devices)
-        equipment_dont_set_on_ship_data = self.get_didnt_fit_equipments_info(self.spaceship_set_equipment_false_info)\
-            if self.spaceship_set_equipment_false_info else None
-        display(f"{ship_characteristics}\n"
-                f"{SPACESHIP_EQUIPMENTS_LIST_HEADER}\n"
-                f"{ship_weapons_characteristics}\n"
-                f"{ship_armors_characteristics}\n"
-                f"{ship_navigations_characteristics}\n"
-                f"{'~' * (len(self.name) + 28)}\n\n")
+        ship_navigations_characteristics = self.get_equipment_characteristics(
+            slot_data=self.slot_for_navigation_devices)
+        message_info = f"{ship_characteristics}\n" \
+                       f"{SPACESHIP_EQUIPMENTS_LIST_HEADER}\n" \
+                       f"{ship_weapons_characteristics}\n" \
+                       f"{ship_armors_characteristics}\n" \
+                       f"{ship_navigations_characteristics}\n"
+        if self.spaceship_set_equipment_false_info:
+            equipment_dont_set_on_ship_data = self.get_didnt_fit_equipments_info(self.spaceship_set_equipment_false_info)
+            message_info += f"{SPACESHIP_SET_EQUIPMENTS_FALSE_HEADER}{equipment_dont_set_on_ship_data}"
+        message_info += f"{'~' * (len(self.name) + 28)}\n\n"
+        display(message_info)
+
 
     @staticmethod
     def get_equipment_characteristics(slot_data: list) -> str:

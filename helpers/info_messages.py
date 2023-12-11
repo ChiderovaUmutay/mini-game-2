@@ -48,4 +48,5 @@ equipment_header_characteristic = {
 
 SPACESHIP_CREATION_HEADER = f"{'=' * 20}🛠 Spaceships creation 🛠{'=' * 20}\n"
 SPACESHIP_EQUIPMENTS_LIST_HEADER = f"{'^' * 5 } EQUIPMENTS {'^' * 5}\n"
+SPACESHIP_SET_EQUIPMENTS_FALSE_HEADER = f"{'^' * 5 } Equipments those doesn't fit {'^' * 5}\n"
 SPACESHIP_SET_EQUIPMENTS_FALSE_MESSAGE = "There is no free space left on the {} ship for this {} {}\n"
