@@ -74,5 +74,4 @@ GAME_RESULTS_MESSAGE = f"{'=' * 23}GAME RESULTS{'=' * 23}\n\n" \
                        f"{'=' * 19}" + "%s WON🏅" + f"{'=' * 19}\n"
 
 INPUT_MESSAGE = "\n🕹 Let's play again (y/n)?\n"
-REPEAT_INPUT_MESSAGE = "🙋🏻Please enter 'y' or 'n'\n"
 FAREWELL_MESSAGE = "\nThe game has stopped.\nGood luck👋🏻"
