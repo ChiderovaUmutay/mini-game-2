@@ -2,8 +2,19 @@ from random import choice, randint
 
 from equipments_classes import Weapon, Armor, Navigator
 from helpers.custom_exceptions import TotalVolumeError
-from helpers.info_messages import EQUIPMENT_CREATION_HEADER, EQUIPMENT_BATCH_HEADER, SPACESHIP_CREATION_HEADER, \
-    SPACESHIP_SET_EQUIPMENTS_FALSE_MESSAGE
+from helpers.info_messages import EQUIPMENT_CREATION_HEADER, \
+    EQUIPMENT_BATCH_HEADER, \
+    SPACESHIP_CREATION_HEADER, \
+    SPACESHIP_SET_EQUIPMENTS_FALSE_MESSAGE, \
+    GAME_START_MESSAGE, \
+    GAME_ROUND_INFO_MESSAGE, \
+    SPACESHIP_MOVE_MESSAGE, \
+    SPACESHIP_EQUIPMENTS_LIST_HEADER, \
+    SPACESHIP_SET_EQUIPMENTS_FALSE_HEADER, \
+    GAME_RESULTS_MESSAGE, \
+    SPACESHIP_HEALTH_INFO, \
+    INPUT_MESSAGE, \
+    FAREWELL_MESSAGE
 from helpers.secondary_functions import display
 from helpers.variables import taken_capacity_values, \
     weapon_damage_values, \
@@ -94,8 +105,8 @@ class Application:
         self.spaceship_2 = self.create_spaceship_object(name_of_the_second_ship)
         self.set_equipments(self.spaceship_1)
         self.set_equipments(self.spaceship_2)
-        self.spaceship_1.__str__()
-        self.spaceship_2.__str__()
+        self.display_full_spaceship_info(self.spaceship_1)
+        self.display_full_spaceship_info(self.spaceship_2)
 
     def create_spaceship_object(self, spaceship_name):
         spaciousness = self.get_equipment_parameter_random_value(ship_spaciousness_values)
@@ -116,10 +127,13 @@ class Application:
             equipment = choice(equipment_dataset)
             try:
                 set_method(equipment)
+                equipment_index = equipment_dataset.index(equipment)
+                equipment_dataset.pop(equipment_index)
             except TotalVolumeError:
-                spaceship.spaceship_set_equipment_false_info.append(SPACESHIP_SET_EQUIPMENTS_FALSE_MESSAGE.format(spaceship.name,
-                                                                                                                  equipment.name,
-                                                                                                                  equipment_type))
+                spaceship.spaceship_set_equipment_false_info.append(
+                    SPACESHIP_SET_EQUIPMENTS_FALSE_MESSAGE.format(spaceship.name,
+                                                                  equipment.name,
+                                                                  equipment_type))
 
     def get_equipments_data_by_type(self, spaceship, equipment_type):
         equipments_data = {
@@ -130,30 +144,78 @@ class Application:
         }
         return equipments_data.get(equipment_type)
 
+    def display_full_spaceship_info(self, spaceship) -> None:
+        ship_weapons_characteristics = self.get_equipment_characteristics(slot_data=spaceship.slot_for_weapons)
+        ship_armors_characteristics = self.get_equipment_characteristics(slot_data=spaceship.slot_for_armor)
+        ship_navigations_characteristics = self.get_equipment_characteristics(
+            slot_data=spaceship.slot_for_navigation_devices)
+        message_info = f"{spaceship.__str__()}\n" \
+                       f"{SPACESHIP_EQUIPMENTS_LIST_HEADER}\n" \
+                       f"{ship_weapons_characteristics}\n" \
+                       f"{ship_armors_characteristics}\n" \
+                       f"{ship_navigations_characteristics}\n"
+        if spaceship.spaceship_set_equipment_false_info:
+            equipment_dont_set_on_ship_data = self.get_didnt_fit_equipments_info(
+                spaceship.spaceship_set_equipment_false_info)
+            message_info += f"{SPACESHIP_SET_EQUIPMENTS_FALSE_HEADER}{equipment_dont_set_on_ship_data}"
+        message_info += f"{'~' * (len(spaceship.name) + 28)}\n\n"
+        display(message_info)
+
+    @staticmethod
+    def get_equipment_characteristics(slot_data: list) -> str:
+        equipments_characteristics = ""
+        for equipment in slot_data:
+            equipments_characteristics += equipment.__str__()
+        return equipments_characteristics
+
+    @staticmethod
+    def get_didnt_fit_equipments_info(message_data):
+        didnt_fit_equipments_info = ""
+        for message in message_data:
+            didnt_fit_equipments_info += message
+        return didnt_fit_equipments_info
+
     def run(self) -> None:
         round_num = 0
+        display(GAME_START_MESSAGE)
         while round_num <= 20:
-            print(f"{'=' * 15}Round #{round_num}{'=' * 15}")
             round_num += 1
-            print(f"{self.spaceship_1.name} spaceship is shooting 💥\n\n")
+            display(GAME_ROUND_INFO_MESSAGE % round_num)
+            display(SPACESHIP_MOVE_MESSAGE % self.spaceship_1.name)
             self.spaceship_1.attack(self.spaceship_2)
+            display(SPACESHIP_HEALTH_INFO.format(self.spaceship_2.name, round(self.spaceship_2.health)))
             if self.spaceship_2.health > 0:
-                print(f"{self.spaceship_2.name} spaceship is shooting 💥\n\n")
+                display(SPACESHIP_MOVE_MESSAGE % self.spaceship_2.name)
                 self.spaceship_2.attack(self.spaceship_1)
-                if self.spaceship_1.health < 0:
-                    print(f"{self.spaceship_2.name} WON!")
-                    break
-            else:
-                print(f"{self.spaceship_1.name} WON!")
+                display(SPACESHIP_HEALTH_INFO.format(self.spaceship_1.name, round(self.spaceship_1.health)))
+            if (self.spaceship_1.health <= 0 or self.spaceship_2.health <= 0) or (
+                    not any(self.spaceship_1.slot_for_weapons) and not any(self.spaceship_2.slot_for_weapons)):
+                self.display_game_results()
                 break
-        else:
-            print(f"{self.spaceship_1.name} spaceship health: {round(self.spaceship_1.health)}\n"
-                  f"{self.spaceship_2.name} spaceship health: {round(self.spaceship_2.health)}")
-            print("Game over!!!")
 
+    def display_game_results(self):
+        winner = self.spaceship_1.name if self.spaceship_1.health > self.spaceship_2.health else self.spaceship_2.name
+        game_over_message = GAME_RESULTS_MESSAGE % (self.spaceship_1.name, round(self.spaceship_1.health),
+                                                    self.spaceship_2.name, round(self.spaceship_2.health),
+                                                    winner)
+        display(game_over_message)
+
+def create_app_object():
+    app_obj = Application()
+    app_obj.create_equipments()
+    app_obj.create_spaceships()
+    return app_obj
 
 if __name__ == "__main__":
-    app = Application()
-    app.create_equipments()
-    app.create_spaceships()
-    # app.run()
+    app = create_app_object()
+    app.run()
+    try:
+        while True:
+            response = input(INPUT_MESSAGE)
+            if response != "y":
+                display(FAREWELL_MESSAGE)
+                break
+            app = create_app_object()
+            app.run()
+    except KeyboardInterrupt:
+        display(FAREWELL_MESSAGE)

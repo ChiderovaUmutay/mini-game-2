@@ -5,7 +5,8 @@ from equipments_classes import Armor, Weapon, Navigator
 from helpers.custom_exceptions import FreeSlotError, TotalVolumeError, EquipmentWornOutError
 from helpers.info_messages import spaceship_data_messages, \
     spaceship_characteristic_message, \
-    SPACESHIP_EQUIPMENTS_LIST_HEADER, SPACESHIP_SET_EQUIPMENTS_FALSE_HEADER
+    spaceship_actions, \
+    EQUIPMENT_WORN_OUT_MESSAGE
 from helpers.secondary_functions import validate_attribute, display
 from helpers.variables import ship_health_values, \
     ship_spaciousness_values, \
@@ -13,7 +14,9 @@ from helpers.variables import ship_health_values, \
     ship_armor_slot_values, \
     ship_weapon_slot_values, \
     ship_navigation_slot_values, \
-    wear_condition_values
+    WEAPON_EQUIPMENT_TYPE, \
+    NAVIGATOR_EQUIPMENT_TYPE, \
+    ARMOR_EQUIPMENT_TYPE
 
 
 class Spaceship:
@@ -101,71 +104,51 @@ class Spaceship:
 
     def attack(self, ship_of_attack) -> None:
         for weapon in self.slot_for_weapons:
-            if weapon.wear_condition < wear_condition_values.get("max_val"):
+            if not isinstance(weapon, bool):
                 accuracy_amount = self.accuracy + self.get_navigation_devices_accuracy_amount()
+                display(spaceship_actions.get("set_navigation") % self.name)
                 hit_probability = randint(1, 100)
                 if hit_probability >= accuracy_amount:
-                    damage = self.get_equipment_action_data(equipment=weapon, message="Weapon equipment is worn out")
+                    display(spaceship_actions.get("is_shooting") % (self.name, weapon.name))
+                    damage = self.get_equipment_action_data(equipment=weapon,
+                                                            message=EQUIPMENT_WORN_OUT_MESSAGE.format(weapon.name,
+                                                                                                      WEAPON_EQUIPMENT_TYPE))
                     ship_of_attack.defend(damage)
-                continue
-        else:
-            print("All weapons are worn out")
 
     def get_navigation_devices_accuracy_amount(self) -> int or float:
         return sum(
-            [self.get_equipment_action_data(equipment=navigation_device, message="Navigation equipment is worn out")
+            [self.get_equipment_action_data(equipment=navigation_device,
+                                            message=EQUIPMENT_WORN_OUT_MESSAGE.format(navigation_device.name,
+                                                                                      NAVIGATOR_EQUIPMENT_TYPE))
              for navigation_device in self.slot_for_navigation_devices])
 
     def defend(self, damage: int or float) -> None:
+        display(spaceship_actions.get("uses_armor") % self.name)
         defence_amount = self.defence + self.get_armor_defence_amount()
         if defence_amount < damage:
             self.health -= (damage - defence_amount)
 
     def get_armor_defence_amount(self) -> int or float:
-        return sum([self.get_equipment_action_data(equipment=armor, message="Armor equipment is worn out")
+        return sum([self.get_equipment_action_data(equipment=armor,
+                                                   message=EQUIPMENT_WORN_OUT_MESSAGE.format(armor.name,
+                                                                                             ARMOR_EQUIPMENT_TYPE))
                     for armor in self.slot_for_armor])
 
-    @staticmethod
-    def get_equipment_action_data(equipment: Union[Armor, Weapon, Navigator], message: str) -> int or float or None:
+    def __str__(self) -> str:
+        ship_characteristics = spaceship_characteristic_message % (self.name,
+                                                                   self.spaciousness,
+                                                                   self.accuracy,
+                                                                   round(self.health),
+                                                                   self.defence)
+        return ship_characteristics
+
+    def get_equipment_action_data(self, equipment: Union[Armor, Weapon, Navigator], message: str) -> int or float or None:
         response = 0
         try:
             response = equipment.action()
         except EquipmentWornOutError:
-            print(message)
+            display(message)
+            if isinstance(equipment, Weapon):
+                self.slot_for_weapons.remove(equipment)
+                self.slot_for_weapons.append(False)
         return response
-
-    def __str__(self) -> None:
-        ship_characteristics = spaceship_characteristic_message % (self.name,
-                                                                   self.spaciousness,
-                                                                   self.accuracy,
-                                                                   self.health,
-                                                                   self.defence)
-        ship_weapons_characteristics = self.get_equipment_characteristics(slot_data=self.slot_for_weapons)
-        ship_armors_characteristics = self.get_equipment_characteristics(slot_data=self.slot_for_armor)
-        ship_navigations_characteristics = self.get_equipment_characteristics(
-            slot_data=self.slot_for_navigation_devices)
-        message_info = f"{ship_characteristics}\n" \
-                       f"{SPACESHIP_EQUIPMENTS_LIST_HEADER}\n" \
-                       f"{ship_weapons_characteristics}\n" \
-                       f"{ship_armors_characteristics}\n" \
-                       f"{ship_navigations_characteristics}\n"
-        if self.spaceship_set_equipment_false_info:
-            equipment_dont_set_on_ship_data = self.get_didnt_fit_equipments_info(self.spaceship_set_equipment_false_info)
-            message_info += f"{SPACESHIP_SET_EQUIPMENTS_FALSE_HEADER}{equipment_dont_set_on_ship_data}"
-        message_info += f"{'~' * (len(self.name) + 28)}\n\n"
-        display(message_info)
-
-
-    @staticmethod
-    def get_equipment_characteristics(slot_data: list) -> str:
-        equipments_characteristics = ""
-        for equipment in slot_data:
-            equipments_characteristics += equipment.__str__()
-        return equipments_characteristics
-
-    @staticmethod
-    def get_didnt_fit_equipments_info(message_data):
-        didnt_fit_equipments_info = ""
-        for message in message_data:
-            didnt_fit_equipments_info += message
-        return didnt_fit_equipments_info

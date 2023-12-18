@@ -31,6 +31,24 @@ spaceship_data_messages = {
     "navigation_slot_error_message": "The number of slots for navigation devices for a spaceship should be from 1 to 2"
 }
 
+equipment_header_characteristic = {
+    "weapon": "\n🔫 Weapon 🔫\n",
+    "armor": "\n🛡 Armor 🛡\n",
+    "navigator": "\n🧭 Navigator 🧭\n"
+}
+
+spaceship_actions = {
+    "set_navigation": f"{'-' * 5}ACTION{'-' * 5}\n\n%s spaceship sets navigation device 🧭\n",
+    "is_shooting": f"{'-' * 5}ACTION{'-' * 5}\n\n%s spaceship fires weapon %s 🚀",
+    "uses_armor": f"{'-' * 5}ACTION{'-' * 5}\n\n%s spaceship is uses armor 🛡\n",
+}
+
+spaceship_shooting_result = {
+    "critical_hit": "\nCRITICAL HIT💥 CRITICAL HIT💥 CRITICAL HIT💥\n",
+    "miss": "\nMISS 👎\n",
+    "hit": "\nHIT💥 HIT💥 HIT💥\n"
+}
+
 spaceship_characteristic_message = f"{'~' * 10}🚀 %s 🚀{'~' * 10}\n" \
                                    "\nSpaceship spaciousness: %s\n" \
                                    "Spaceship accuracy: %s\n" \
@@ -39,14 +57,22 @@ spaceship_characteristic_message = f"{'~' * 10}🚀 %s 🚀{'~' * 10}\n" \
 
 EQUIPMENT_CREATION_HEADER = f"{'=' * 20}🛠 Equipments creation 🛠{'=' * 20}\n"
 EQUIPMENT_BATCH_HEADER = f"{'~' * 10}%s batch of equipment{'~' * 10}\n"
-
-equipment_header_characteristic = {
-    "weapon": "\n🔫 Weapon 🔫\n",
-    "armor": "\n🛡 Armor 🛡\n",
-    "navigator": "\n🧭 Navigator 🧭\n"
-}
+EQUIPMENT_WORN_OUT_MESSAGE = "\n⚠⚠⚠ {} {} is worn out ⚠⚠⚠\n"
 
 SPACESHIP_CREATION_HEADER = f"{'=' * 20}🛠 Spaceships creation 🛠{'=' * 20}\n"
-SPACESHIP_EQUIPMENTS_LIST_HEADER = f"{'^' * 5 } EQUIPMENTS {'^' * 5}\n"
-SPACESHIP_SET_EQUIPMENTS_FALSE_HEADER = f"{'^' * 5 } Equipments those doesn't fit {'^' * 5}\n"
+SPACESHIP_EQUIPMENTS_LIST_HEADER = f"{'^' * 5} EQUIPMENTS {'^' * 5}\n"
+SPACESHIP_SET_EQUIPMENTS_FALSE_HEADER = f"{'^' * 5} Equipments those doesn't fit {'^' * 5}\n"
 SPACESHIP_SET_EQUIPMENTS_FALSE_MESSAGE = "There is no free space left on the {} ship for this {} {}\n"
+SPACESHIP_HEALTH_INFO = "{} spaceship health: {} 💊💊💊\n"
+
+GAME_START_MESSAGE = f"{'-' * 7}🕹💥🚀 THE GAME HAS BEGUN 🕹💥🚀{'-' * 7}\n"
+GAME_ROUND_INFO_MESSAGE = f"\n{'=' * 20}Round #%s{'=' * 20}\n"
+SPACESHIP_MOVE_MESSAGE = f"{'*' * 13} %s move {'*' * 13}\n"
+GAME_RESULTS_MESSAGE = f"{'=' * 23}GAME RESULTS{'=' * 23}\n\n" \
+                       f"%s spaceship health: %s\n" \
+                       f"%s spaceship health: %s\n\n" \
+                       f"{'=' * 19}" + "%s WON🏅" + f"{'=' * 19}\n"
+
+INPUT_MESSAGE = "\n🕹 Let's play again (y/n)?\n"
+REPEAT_INPUT_MESSAGE = "🙋🏻Please enter 'y' or 'n'\n"
+FAREWELL_MESSAGE = "\nThe game has stopped.\nGood luck👋🏻"

@@ -5,8 +5,9 @@ from helpers.info_messages import equipment_data_messages, \
     weapon_data_messages, \
     armor_data_messages, \
     navigator_data_messages, \
-    equipment_header_characteristic
-from helpers.secondary_functions import validate_attribute
+    equipment_header_characteristic, \
+    spaceship_shooting_result
+from helpers.secondary_functions import validate_attribute, display
 from helpers.variables import taken_capacity_values, \
     wear_condition_values, \
     weapon_damage_values, \
@@ -65,10 +66,13 @@ class Weapon(Equipment):
         damage = round(uniform(self.min_damage, self.max_damage), 1)
         if damage <= self.critical_hit_chance:
             critical_damage = (self.max_damage * 40) / 100
+            display(spaceship_shooting_result.get("critical_hit"))
             return self.get_calculated_damage(critical_damage)
         elif damage <= MISFIRE_PERCENTAGE:
+            display(spaceship_shooting_result.get("miss"))
             return 0
         else:
+            display(spaceship_shooting_result.get("hit"))
             return self.get_calculated_damage(damage)
 
     def __str__(self) -> str:
