@@ -1,3 +1,5 @@
+from helpers.variables import drone_efficiency_values
+
 equipment_data_messages = {
     "taken_capacity_error_message": "The number of units of occupied volume should be from 30 to 100",
     "info_message": "\nEquipment name: {}\n"
@@ -25,6 +27,12 @@ navigator_data_messages = {
     "info_message": "The number of navigator accuracy units: {}\n"
 }
 
+drone_data_messages = {
+    "efficiency_error_message": f"The range of the number of efficiency units should be from "
+                                f"{drone_efficiency_values.get('min_val')} to {drone_efficiency_values.get('max_val')}",
+    "info_message": "The number of drone efficiency units: {}\n"
+}
+
 spaceship_data_messages = {
     "spaciousness_error_message": "The range of number of spaceship spaciousness units should be from 300 to 1000",
     "accuracy_error_message": "The range of the number of spaceship accuracy units must be from 0 to 5",
@@ -36,7 +44,8 @@ spaceship_data_messages = {
 equipment_header_characteristic = {
     "weapon": "\n🔫 Weapon 🔫\n",
     "armor": "\n🛡 Armor 🛡\n",
-    "navigator": "\n🧭 Navigator 🧭\n"
+    "navigator": "\n🧭 Navigator 🧭\n",
+    "drone": "\n⛑ Drone ⛑\n"
 }
 
 spaceship_actions = {

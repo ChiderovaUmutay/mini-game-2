@@ -6,7 +6,8 @@ from helpers.info_messages import equipment_data_messages, \
     armor_data_messages, \
     navigator_data_messages, \
     equipment_header_characteristic, \
-    spaceship_shooting_result
+    spaceship_shooting_result, \
+    drone_data_messages
 from helpers.secondary_functions import validate_attribute, display
 from helpers.variables import taken_capacity_values, \
     wear_condition_values, \
@@ -14,11 +15,13 @@ from helpers.variables import taken_capacity_values, \
     weapon_critical_hit_values, \
     armor_defence_values, \
     navigator_accuracy_values, \
+    drone_efficiency_values, \
     MISFIRE_PERCENTAGE, \
     ELECTROMAGNETIC_SURGE_PERCENTAGE, \
     NAVIGATOR_EQUIPMENT_TYPE, \
     ARMOR_EQUIPMENT_TYPE, \
-    WEAPON_EQUIPMENT_TYPE
+    WEAPON_EQUIPMENT_TYPE, \
+    DRONE_EQUIPMENT_TYPE
 
 
 class Equipment:
@@ -31,11 +34,12 @@ class Equipment:
         self.wear_condition = wear_condition_values.get("min_val")
         self.taken_capacity = taken_capacity
 
-    def action(self) -> None:
+    def action(self, drone=False) -> None:
         if self.wear_condition >= wear_condition_values.get("max_val"):
             raise EquipmentWornOutError()
         else:
-            self.wear_condition += wear_condition_values.get("increasing_val")
+            self.wear_condition += wear_condition_values.get("increasing_val") if not drone \
+                else wear_condition_values.get("drone_increasing_val")
 
     def calculate_equipment_efficiency(self, equipment: int or float) -> int or float:
         calculated_efficiency = equipment - (equipment * self.wear_condition) / 100
@@ -143,3 +147,24 @@ class Navigator(Equipment):
                                     f"{super().__str__()}" \
                                     f"{navigator_data_messages.get('info_message').format(self.accuracy)}"
         return navigator_characteristics
+
+
+class HealingDrone(Equipment):
+    def __init__(self, name: str, taken_capacity: int, efficiency: int):
+        super().__init__(name, taken_capacity)
+        validate_attribute(attribute=efficiency,
+                           min_val=drone_efficiency_values.get("min_val"),
+                           max_val=drone_efficiency_values.get("max_val"),
+                           message=drone_data_messages.get("efficiency_error_message"))
+        self.efficiency = efficiency
+
+    def action(self, damage: int or float) -> int or float:
+        healing_num = damage * self.efficiency / 100
+        super().action(drone=True)
+        return healing_num
+
+    def __str__(self) -> str:
+        drone_characteristics = f"{equipment_header_characteristic.get(DRONE_EQUIPMENT_TYPE)}" \
+                                f"{super().__str__()}" \
+                                f"{drone_data_messages.get('info_message').format(self.efficiency)}"
+        return drone_characteristics

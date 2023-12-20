@@ -1,7 +1,8 @@
 wear_condition_values = {
     "min_val": 0,
     "max_val": 100,
-    "increasing_val": 10
+    "increasing_val": 10,
+    "drone_increasing_val": 20
 }
 
 taken_capacity_values = {
@@ -27,6 +28,11 @@ armor_defence_values = {
 navigator_accuracy_values = {
     "min_val": 5,
     "max_val": 40
+}
+
+drone_efficiency_values = {
+    "min_val": 50,
+    "max_val": 200
 }
 
 MISFIRE_PERCENTAGE = 15
@@ -65,6 +71,7 @@ ship_navigation_slot_values = {
 WEAPON_EQUIPMENT_TYPE = "weapon"
 ARMOR_EQUIPMENT_TYPE = "armor"
 NAVIGATOR_EQUIPMENT_TYPE = "navigator"
+DRONE_EQUIPMENT_TYPE = "drone"
 
 name_of_the_first_ship = "Stellar Vanguard"
 name_of_the_second_ship = "Nebula Seraphim"
