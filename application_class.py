@@ -35,6 +35,7 @@ from helpers.variables import taken_capacity_values, \
     ship_navigation_slot_values, \
     ship_drone_slot_values, \
     equipments_types, \
+    ship_health_values, \
     WEAPON_EQUIPMENT_TYPE, \
     ARMOR_EQUIPMENT_TYPE, \
     NAVIGATOR_EQUIPMENT_TYPE, \
@@ -212,8 +213,8 @@ class Application:
                 display(SPACESHIP_MOVE_MESSAGE % self.spaceship_2.name)
                 self.spaceship_2.attack(self.spaceship_1)
                 display(SPACESHIP_HEALTH_INFO.format(self.spaceship_1.name, round(self.spaceship_1.health)))
-            if (self.spaceship_1.health <= 0 or self.spaceship_2.health <= 0) or (
-                    not any(self.spaceship_1.slot_for_weapons) and not any(self.spaceship_2.slot_for_weapons)):
+            if (self.spaceship_1.health <= ship_health_values.get("min_val") or self.spaceship_2.health <= ship_health_values.get("min_val")) \
+                    or (not any(self.spaceship_1.slot_for_weapons) and not any(self.spaceship_2.slot_for_weapons)):
                 self.display_game_results()
                 break
         else:
