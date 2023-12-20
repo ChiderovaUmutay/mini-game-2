@@ -159,7 +159,8 @@ class HealingDrone(Equipment):
         self.efficiency = efficiency
 
     def action(self, damage: int or float) -> int or float:
-        healing_num = damage * self.efficiency / 100
+        calculated_efficiency = self.calculate_equipment_efficiency(self.efficiency)
+        healing_num = damage * calculated_efficiency / 100
         super().action(drone=True)
         return healing_num
 
