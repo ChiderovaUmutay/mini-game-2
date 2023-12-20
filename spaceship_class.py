@@ -1,7 +1,7 @@
 from random import randint
 from typing import Union
 
-from equipments_classes import Armor, Weapon, Navigator
+from equipments_classes import Armor, Weapon, Navigator, Damage
 from helpers.custom_exceptions import FreeSlotError, TotalVolumeError, EquipmentWornOutError
 from helpers.info_messages import spaceship_data_messages, \
     spaceship_characteristic_message, \
@@ -105,16 +105,18 @@ class Spaceship:
     def attack(self, ship_of_attack) -> None:
         for weapon in self.slot_for_weapons:
             if not isinstance(weapon, bool):
-                accuracy_amount = self.accuracy + self.get_navigation_devices_accuracy_amount()
                 display(spaceship_actions.get("set_navigation") % self.name)
+                accuracy_amount = self.accuracy + self.get_navigation_devices_accuracy_amount()
                 hit_probability = randint(1, 100)
                 if hit_probability >= accuracy_amount:
-                    display(spaceship_actions.get("is_shooting") % (self.name, weapon.name))
-                    damage = self.get_equipment_action_data(equipment=weapon,
-                                                            message=EQUIPMENT_WORN_OUT_MESSAGE.format(weapon.name,
+                    display(spaceship_actions.get("is_shooting") % (self.name, weapon.name, weapon.weapon_type))
+                    damage_obj = self.get_equipment_action_data(equipment=weapon,
+                                                                message=EQUIPMENT_WORN_OUT_MESSAGE.format(weapon.name,
                                                                                                       WEAPON_EQUIPMENT_TYPE))
-                    ship_of_attack.defend(damage)
-
+                    if isinstance(damage_obj, Damage):
+                        ship_of_attack.defend(damage_obj=damage_obj)
+                else:
+                    display(spaceship_actions.get("set_navigation_false"))
     def get_navigation_devices_accuracy_amount(self) -> int or float:
         return sum(
             [self.get_equipment_action_data(equipment=navigation_device,
@@ -122,17 +124,25 @@ class Spaceship:
                                                                                       NAVIGATOR_EQUIPMENT_TYPE))
              for navigation_device in self.slot_for_navigation_devices])
 
-    def defend(self, damage: int or float) -> None:
-        display(spaceship_actions.get("uses_armor") % self.name)
-        defence_amount = self.defence + self.get_armor_defence_amount()
+    def defend(self, damage_obj: Damage) -> None:
+        damage, damage_type = damage_obj.damage, damage_obj.dmg_type
+        defence_amount = self.defence + self.get_armor_defence_amount(dmg_type=damage_type)
         if defence_amount < damage:
             self.health -= (damage - defence_amount)
 
-    def get_armor_defence_amount(self) -> int or float:
-        return sum([self.get_equipment_action_data(equipment=armor,
-                                                   message=EQUIPMENT_WORN_OUT_MESSAGE.format(armor.name,
-                                                                                             ARMOR_EQUIPMENT_TYPE))
-                    for armor in self.slot_for_armor])
+    def get_armor_defence_amount(self, dmg_type: str) -> int or float:
+        amount = 0
+        for armor in self.slot_for_armor:
+            if armor.armor_type == dmg_type:
+                display(spaceship_actions.get("uses_armor") % (self.name, armor.name, armor.armor_type))
+                armor_action_data = self.get_equipment_action_data(equipment=armor,
+                                               message=EQUIPMENT_WORN_OUT_MESSAGE.format(armor.name,
+                                                                                         ARMOR_EQUIPMENT_TYPE))
+                amount += armor_action_data
+                break
+        else:
+            display(spaceship_actions.get("uses_basic_armor") % self.name)
+        return amount
 
     def __str__(self) -> str:
         ship_characteristics = spaceship_characteristic_message % (self.name,
@@ -142,7 +152,7 @@ class Spaceship:
                                                                    self.defence)
         return ship_characteristics
 
-    def get_equipment_action_data(self, equipment: Union[Armor, Weapon, Navigator], message: str) -> int or float or None:
+    def get_equipment_action_data(self, equipment: Union[Armor, Weapon, Navigator], message: str) -> int or float or Damage:
         response = 0
         try:
             response = equipment.action()

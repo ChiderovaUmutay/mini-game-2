@@ -40,9 +40,11 @@ equipment_header_characteristic = {
 }
 
 spaceship_actions = {
-    "set_navigation": f"{'-' * 5}ACTION{'-' * 5}\n\n%s spaceship sets navigation device 🧭\n",
-    "is_shooting": f"{'-' * 5}ACTION{'-' * 5}\n\n%s spaceship fires weapon %s 🚀",
-    "uses_armor": f"{'-' * 5}ACTION{'-' * 5}\n\n%s spaceship is uses armor 🛡\n",
+    "set_navigation": f'{"-" * 5}ACTION{"-" * 5}\n\n%s spaceship sets navigation device 🧭\n',
+    "set_navigation_false": '⚠⚠⚠ Failed to set up navigation ⚠⚠⚠\n',
+    "is_shooting": f'{"-" * 5}ACTION{"-" * 5}\n\n%s spaceship fires weapon "%s", which type is "%s" 🚀',
+    "uses_armor": f'{"-" * 5}ACTION{"-" * 5}\n\n%s spaceship is uses armor "%s", which type is "%s" 🛡\n',
+    "uses_basic_armor": f'{"-" * 5}ACTION{"-" * 5}\n\n%s spaceship has used basic armor 🛡\n',
 }
 
 spaceship_shooting_result = {
@@ -59,13 +61,14 @@ spaceship_characteristic_message = f"{'~' * 10}🚀 %s 🚀{'~' * 10}\n" \
 
 EQUIPMENT_CREATION_HEADER = f"{'=' * 20}🛠 Equipments creation 🛠{'=' * 20}\n"
 EQUIPMENT_BATCH_HEADER = f"{'~' * 10}%s batch of equipment{'~' * 10}\n"
-EQUIPMENT_WORN_OUT_MESSAGE = "\n⚠⚠⚠ {} {} is worn out ⚠⚠⚠\n"
+EQUIPMENT_WORN_OUT_MESSAGE = '\n⚠⚠⚠ "{}" {} is worn out ⚠⚠⚠\n'
 
 SPACESHIP_CREATION_HEADER = f"{'=' * 20}🛠 Spaceships creation 🛠{'=' * 20}\n"
 SPACESHIP_EQUIPMENTS_LIST_HEADER = f"{'^' * 5} EQUIPMENTS {'^' * 5}\n"
 SPACESHIP_SET_EQUIPMENTS_FALSE_HEADER = f"{'^' * 5} Equipments those doesn't fit {'^' * 5}\n"
-SPACESHIP_SET_EQUIPMENTS_FALSE_MESSAGE = "There is no free space left on the {} ship for this {} {}\n"
-SPACESHIP_HEALTH_INFO = "{} spaceship health: {} 💊💊💊\n"
+SPACESHIP_SET_EQUIPMENTS_FALSE_MESSAGE = 'There is no free space left on the "{}" ship for this "{}" {}\n'
+SPACESHIP_HEALTH_INFO = f"{'-' * 5}ATTACK RESULTS{'-' * 5}\n\n" \
+                        "{} spaceship health: {} 💊💊💊\n"
 
 GAME_START_MESSAGE = f"{'-' * 7}🕹💥🚀 THE GAME HAS BEGUN 🕹💥🚀{'-' * 7}\n"
 GAME_ROUND_INFO_MESSAGE = f"\n{'=' * 20}Round #%s{'=' * 20}\n"

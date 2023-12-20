@@ -46,6 +46,12 @@ class Equipment:
         return equipment_characteristics
 
 
+class Damage:
+    def __init__(self, damage, dmg_type):
+        self.damage = damage
+        self.dmg_type = dmg_type
+
+
 class Weapon(Equipment):
 
     def __init__(self, name: str, taken_capacity: int, weapon_type: str, min_damage: int,
@@ -64,18 +70,20 @@ class Weapon(Equipment):
         self.critical_hit_chance = critical_hit_chance
         self.max_damage = self.min_damage + (self.min_damage * 40) / 100
 
-    def action(self) -> int or float:
+    def action(self) -> Damage:
         damage = round(uniform(self.min_damage, self.max_damage), 1)
         if damage <= self.critical_hit_chance:
             critical_damage = (self.max_damage * 40) / 100
             display(spaceship_shooting_result.get("critical_hit"))
-            return self.get_calculated_damage(critical_damage)
+            damage = self.get_calculated_damage(critical_damage)
         elif damage <= MISFIRE_PERCENTAGE:
             display(spaceship_shooting_result.get("miss"))
-            return 0
+            damage = 0
         else:
             display(spaceship_shooting_result.get("hit"))
-            return self.get_calculated_damage(damage)
+            damage = self.get_calculated_damage(damage)
+        damage_obj = Damage(damage=damage, dmg_type=self.weapon_type)
+        return damage_obj
 
     def __str__(self) -> str:
         weapon_characteristics = f"{equipment_header_characteristic.get(WEAPON_EQUIPMENT_TYPE)}" \
