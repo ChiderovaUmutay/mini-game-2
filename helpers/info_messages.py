@@ -38,7 +38,8 @@ spaceship_data_messages = {
     "accuracy_error_message": "The range of the number of spaceship accuracy units must be from 0 to 5",
     "armor_slot_error_message": "The number of slots for the spaceship's hinged armor should be from 1 to 3",
     "weapon_slot_error_message": "The number of weapon slots for a spaceship should be from 1 to 3",
-    "navigation_slot_error_message": "The number of slots for navigation devices for a spaceship should be from 1 to 2"
+    "navigation_slot_error_message": "The number of slots for navigation devices for a spaceship should be from 1 to 2",
+    "drone_slot_error_message": "The number of slots for healing drones for a spaceship should be from 0 to 2"
 }
 
 equipment_header_characteristic = {

@@ -1,7 +1,7 @@
 from random import randint
 from typing import Union
 
-from equipments_classes import Armor, Weapon, Navigator, Damage
+from equipments_classes import Armor, Weapon, Navigator, Damage, HealingDrone
 from helpers.custom_exceptions import FreeSlotError, TotalVolumeError, EquipmentWornOutError
 from helpers.info_messages import spaceship_data_messages, \
     spaceship_characteristic_message, \
@@ -14,6 +14,7 @@ from helpers.variables import ship_health_values, \
     ship_armor_slot_values, \
     ship_weapon_slot_values, \
     ship_navigation_slot_values, \
+    ship_drone_slot_values, \
     WEAPON_EQUIPMENT_TYPE, \
     NAVIGATOR_EQUIPMENT_TYPE, \
     ARMOR_EQUIPMENT_TYPE
@@ -25,16 +26,23 @@ class Spaceship:
                  accuracy: int,
                  slot_for_armor: list or None = None,
                  slot_for_weapons: list or None = None,
-                 slot_for_navigation_devices: list or None = None) -> None:
-        parameters = [spaciousness, accuracy, slot_for_armor, slot_for_weapons, slot_for_navigation_devices]
+                 slot_for_navigation_devices: list or None = None,
+                 slot_for_healing_drones: list or None = None) -> None:
+        parameters = [spaciousness,
+                      accuracy,
+                      slot_for_armor,
+                      slot_for_weapons,
+                      slot_for_navigation_devices,
+                      slot_for_healing_drones]
         self.validator(args=parameters)
         self.name = name
         self.spaciousness = spaciousness
         self.accuracy = accuracy
         self.health = ship_health_values.get("max_val")
-        self.slot_for_armor = [] if slot_for_armor is None else slot_for_weapons
-        self.slot_for_weapons = [] if slot_for_weapons is None else slot_for_weapons
-        self.slot_for_navigation_devices = [] if slot_for_navigation_devices is None else slot_for_navigation_devices
+        self.slot_for_armor = slot_for_armor if slot_for_armor else []
+        self.slot_for_weapons = slot_for_weapons if slot_for_weapons else []
+        self.slot_for_navigation_devices = slot_for_navigation_devices if slot_for_navigation_devices else []
+        self.slot_for_healing_drones = slot_for_healing_drones if slot_for_healing_drones else []
         self.defence = self.calculate_defence_value() if self.slot_for_armor else 0
         self.spaceship_set_equipment_false_info = []
 
@@ -44,7 +52,8 @@ class Spaceship:
             accuracy, \
             slot_for_armor, \
             slot_for_weapons, \
-            slot_for_navigation_devices = args[0], args[1], args[2], args[3], args[4]
+            slot_for_navigation_devices, \
+            slot_for_healing_drones = args[0], args[1], args[2], args[3], args[4], args[5]
         validate_attribute(attribute=spaciousness,
                            min_val=ship_spaciousness_values.get("min_val"),
                            max_val=ship_spaciousness_values.get("max_val"),
@@ -68,6 +77,11 @@ class Spaceship:
                                min_val=ship_navigation_slot_values.get("min_qty"),
                                max_val=ship_navigation_slot_values.get("max_qty"),
                                message=spaceship_data_messages.get("navigation_slot_error_message"))
+        if slot_for_healing_drones:
+            validate_attribute(attribute=slot_for_healing_drones,
+                               min_val=ship_drone_slot_values.get("min_qty"),
+                               max_val=ship_drone_slot_values.get("max_qty"),
+                               message=spaceship_data_messages.get("drone_slot_error_message"))
 
     def calculate_defence_value(self) -> int or float:
         return (1 / (self.spaciousness * len(self.slot_for_armor))) * 10 ** 4
@@ -90,7 +104,13 @@ class Spaceship:
         self.check_spaceship_capacity(equipment=navigation_object)
         self.slot_for_navigation_devices.append(navigation_object)
 
-    def check_spaceship_capacity(self, equipment: Union[Armor, Weapon, Navigator]) -> None:
+    def set_healing_drones(self, drone_object: HealingDrone) -> None:
+        if len(self.slot_for_healing_drones) == ship_drone_slot_values.get("max_qty"):
+            raise FreeSlotError()
+        self.check_spaceship_capacity(equipment=drone_object)
+        self.slot_for_healing_drones.append(drone_object)
+
+    def check_spaceship_capacity(self, equipment: Union[Armor, Weapon, Navigator, HealingDrone]) -> None:
         if sum([self.get_total_occupied_volume_of_equipment(), equipment.taken_capacity]) >= self.spaciousness:
             raise TotalVolumeError()
 
@@ -99,8 +119,13 @@ class Spaceship:
         weapons_taken_capacity_amount = sum([weapon.taken_capacity for weapon in self.slot_for_weapons])
         navigation_devices_taken_capacity_amount = sum(
             [navigation_device.taken_capacity for navigation_device in self.slot_for_navigation_devices])
+        healing_drones_taken_capacity_amount = sum(
+            [drone.taken_capacity for drone in self.slot_for_healing_drones])
         return sum(
-            [armors_taken_capacity_amount, weapons_taken_capacity_amount, navigation_devices_taken_capacity_amount])
+            [armors_taken_capacity_amount,
+             weapons_taken_capacity_amount,
+             navigation_devices_taken_capacity_amount,
+             healing_drones_taken_capacity_amount])
 
     def attack(self, ship_of_attack) -> None:
         for weapon in self.slot_for_weapons:
@@ -112,11 +137,12 @@ class Spaceship:
                     display(spaceship_actions.get("is_shooting") % (self.name, weapon.name, weapon.weapon_type))
                     damage_obj = self.get_equipment_action_data(equipment=weapon,
                                                                 message=EQUIPMENT_WORN_OUT_MESSAGE.format(weapon.name,
-                                                                                                      WEAPON_EQUIPMENT_TYPE))
+                                                                                                          WEAPON_EQUIPMENT_TYPE))
                     if isinstance(damage_obj, Damage):
                         ship_of_attack.defend(damage_obj=damage_obj)
                 else:
                     display(spaceship_actions.get("set_navigation_false"))
+
     def get_navigation_devices_accuracy_amount(self) -> int or float:
         return sum(
             [self.get_equipment_action_data(equipment=navigation_device,
@@ -136,8 +162,8 @@ class Spaceship:
             if armor.armor_type == dmg_type:
                 display(spaceship_actions.get("uses_armor") % (self.name, armor.name, armor.armor_type))
                 armor_action_data = self.get_equipment_action_data(equipment=armor,
-                                               message=EQUIPMENT_WORN_OUT_MESSAGE.format(armor.name,
-                                                                                         ARMOR_EQUIPMENT_TYPE))
+                                                                   message=EQUIPMENT_WORN_OUT_MESSAGE.format(armor.name,
+                                                                                                             ARMOR_EQUIPMENT_TYPE))
                 amount += armor_action_data
                 break
         else:
@@ -152,7 +178,8 @@ class Spaceship:
                                                                    self.defence)
         return ship_characteristics
 
-    def get_equipment_action_data(self, equipment: Union[Armor, Weapon, Navigator], message: str) -> int or float or Damage:
+    def get_equipment_action_data(self, equipment: Union[Armor, Weapon, Navigator],
+                                  message: str) -> int or float or Damage:
         response = 0
         try:
             response = equipment.action()

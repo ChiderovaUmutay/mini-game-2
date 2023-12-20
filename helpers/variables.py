@@ -45,7 +45,7 @@ ship_health_values = {
 
 ship_spaciousness_values = {
     "min_val": 300,
-    "max_val": 1000
+    "max_val": 1800
 }
 
 ship_accuracy_values = {
@@ -68,6 +68,11 @@ ship_navigation_slot_values = {
     "max_qty": 2
 }
 
+ship_drone_slot_values = {
+    "min_qty": 0,
+    "max_qty": 2
+}
+
 WEAPON_EQUIPMENT_TYPE = "weapon"
 ARMOR_EQUIPMENT_TYPE = "armor"
 NAVIGATOR_EQUIPMENT_TYPE = "navigator"
@@ -75,6 +80,15 @@ DRONE_EQUIPMENT_TYPE = "drone"
 
 name_of_the_first_ship = "Stellar Vanguard"
 name_of_the_second_ship = "Nebula Seraphim"
+
+equipments_types = ["Laser",
+                    "Fragmentation",
+                    "Electromagnetic",
+                    "Plasma",
+                    "Ion",
+                    "Missiles",
+                    "Antimatter",
+                    "Disintegration"]
 
 list_of_weapon_names = [
     "Quantum Blaster Cannon",
@@ -146,11 +160,27 @@ list_of_navigation_names = [
     "QuantumCompass Interface"
 ]
 
-equipments_types = ["Laser",
-                    "Fragmentation",
-                    "Electromagnetic",
-                    "Plasma",
-                    "Ion",
-                    "Missiles",
-                    "Antimatter",
-                    "Disintegration"]
+list_of_drones_names = [
+    "NanoMender",
+    "MediDrift",
+    "Celestial mender",
+    "QuantumSoothe",
+    "StarCure",
+    "Drone",
+    "HealSphere",
+    "CosmicMend",
+    "NebulaNurse",
+    "BioRejuvenator",
+    "HarmonySweep",
+    "RadiantRepairer",
+    "NebulaNurturer",
+    "ZenithHealer",
+    "PulseWell",
+    "Drone",
+    "StellarSerenity",
+    "QuantumQuell",
+    "ResilienceRover",
+    "AuraMender",
+    "UnityMender",
+    "AstroRestorer"
+]
