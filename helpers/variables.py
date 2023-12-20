@@ -90,6 +90,9 @@ equipments_types = ["Laser",
                     "Antimatter",
                     "Disintegration"]
 
+ELECTROMAGNETIC_DAMAGE = "Electromagnetic"
+
+
 list_of_weapon_names = [
     "Quantum Blaster Cannon",
     "NovaStrike Pulse Emitter",

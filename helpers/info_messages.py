@@ -55,6 +55,7 @@ spaceship_actions = {
     "is_shooting": f'{"-" * 5}ACTION{"-" * 5}\n\n%s spaceship fires weapon "%s", which type is "%s" 🚀',
     "uses_armor": f'{"-" * 5}ACTION{"-" * 5}\n\n%s spaceship is uses armor "%s", which type is "%s" 🛡\n',
     "uses_basic_armor": f'{"-" * 5}ACTION{"-" * 5}\n\n%s spaceship has used basic armor 🛡\n',
+    "uses_healing_drone": f'%s spaceship is uses healing drones ⛑\n',
 }
 
 spaceship_shooting_result = {

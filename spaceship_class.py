@@ -17,7 +17,9 @@ from helpers.variables import ship_health_values, \
     ship_drone_slot_values, \
     WEAPON_EQUIPMENT_TYPE, \
     NAVIGATOR_EQUIPMENT_TYPE, \
-    ARMOR_EQUIPMENT_TYPE
+    ARMOR_EQUIPMENT_TYPE, \
+    DRONE_EQUIPMENT_TYPE, \
+    ELECTROMAGNETIC_DAMAGE
 
 
 class Spaceship:
@@ -155,7 +157,10 @@ class Spaceship:
         defence_amount = self.defence + self.get_armor_defence_amount(dmg_type=damage_type)
         if defence_amount < damage:
             self.health -= (damage - defence_amount)
-
+            if damage_type == ELECTROMAGNETIC_DAMAGE:
+                display(spaceship_actions.get("uses_healing_drone") % self.name)
+                healing_num = self.get_healing_drone_efficiency_amount(damage=damage)
+                self.health += healing_num
     def get_armor_defence_amount(self, dmg_type: str) -> int or float:
         amount = 0
         for armor in self.slot_for_armor:
@@ -170,6 +175,15 @@ class Spaceship:
             display(spaceship_actions.get("uses_basic_armor") % self.name)
         return amount
 
+    def get_healing_drone_efficiency_amount(self, damage: int or float) -> int or float:
+        return sum(
+            [self.get_equipment_action_data(equipment=drone,
+                                            message=EQUIPMENT_WORN_OUT_MESSAGE.format(drone.name,
+                                                                                      DRONE_EQUIPMENT_TYPE),
+                                            damage=damage)
+             for drone in self.slot_for_healing_drones])
+
+
     def __str__(self) -> str:
         ship_characteristics = spaceship_characteristic_message % (self.name,
                                                                    self.spaciousness,
@@ -178,11 +192,11 @@ class Spaceship:
                                                                    self.defence)
         return ship_characteristics
 
-    def get_equipment_action_data(self, equipment: Union[Armor, Weapon, Navigator],
-                                  message: str) -> int or float or Damage:
+    def get_equipment_action_data(self, equipment: Union[Armor, Weapon, Navigator, HealingDrone],
+                                  message: str, damage=None) -> int or float or Damage:
         response = 0
         try:
-            response = equipment.action()
+            response = equipment.action() if damage is None else equipment.action(damage=damage)
         except EquipmentWornOutError:
             display(message)
             if isinstance(equipment, Weapon):

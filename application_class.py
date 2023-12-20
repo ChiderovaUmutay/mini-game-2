@@ -216,6 +216,8 @@ class Application:
                     not any(self.spaceship_1.slot_for_weapons) and not any(self.spaceship_2.slot_for_weapons)):
                 self.display_game_results()
                 break
+        else:
+            self.display_game_results()
 
     def display_game_results(self):
         winner = self.spaceship_1.name if self.spaceship_1.health > self.spaceship_2.health else self.spaceship_2.name
@@ -234,14 +236,14 @@ def create_app_object():
 
 if __name__ == "__main__":
     app = create_app_object()
-    # app.run()
-    # try:
-    #     while True:
-    #         response = input(INPUT_MESSAGE)
-    #         if response != "y":
-    #             display(FAREWELL_MESSAGE)
-    #             break
-    #         app = create_app_object()
-    #         app.run()
-    # except KeyboardInterrupt:
-    #     display(FAREWELL_MESSAGE)
+    app.run()
+    try:
+        while True:
+            response = input(INPUT_MESSAGE)
+            if response != "y":
+                display(FAREWELL_MESSAGE)
+                break
+            app = create_app_object()
+            app.run()
+    except KeyboardInterrupt:
+        display(FAREWELL_MESSAGE)
