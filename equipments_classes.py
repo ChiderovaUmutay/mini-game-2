@@ -17,7 +17,7 @@ from helpers.variables import taken_capacity_values, \
     MISFIRE_PERCENTAGE, \
     ELECTROMAGNETIC_SURGE_PERCENTAGE, \
     NAVIGATOR_EQUIPMENT_TYPE, \
-    ARMOR_EQUIPMENT_TYPE,\
+    ARMOR_EQUIPMENT_TYPE, \
     WEAPON_EQUIPMENT_TYPE
 
 
@@ -48,7 +48,8 @@ class Equipment:
 
 class Weapon(Equipment):
 
-    def __init__(self, name: str, taken_capacity: int, min_damage: int, critical_hit_chance: int) -> None:
+    def __init__(self, name: str, taken_capacity: int, weapon_type: str, min_damage: int,
+                 critical_hit_chance: int) -> None:
         super().__init__(name, taken_capacity)
         validate_attribute(attribute=min_damage,
                            min_val=weapon_damage_values.get("min_val"),
@@ -58,6 +59,7 @@ class Weapon(Equipment):
                            min_val=weapon_critical_hit_values.get("min_val"),
                            max_val=weapon_critical_hit_values.get("max_val"),
                            message=weapon_data_messages.get("critical_hit_chance_error_message"))
+        self.weapon_type = weapon_type
         self.min_damage = min_damage
         self.critical_hit_chance = critical_hit_chance
         self.max_damage = self.min_damage + (self.min_damage * 40) / 100
@@ -78,7 +80,7 @@ class Weapon(Equipment):
     def __str__(self) -> str:
         weapon_characteristics = f"{equipment_header_characteristic.get(WEAPON_EQUIPMENT_TYPE)}" \
                                  f"{super().__str__()}" \
-                                 f"{weapon_data_messages.get('info_message').format(self.min_damage, self.max_damage, self.critical_hit_chance)}"
+                                 f"{weapon_data_messages.get('info_message').format(self.weapon_type, self.min_damage, self.max_damage, self.critical_hit_chance)}"
         return weapon_characteristics
 
     def get_calculated_damage(self, damage: int or float) -> int or float:
@@ -89,12 +91,13 @@ class Weapon(Equipment):
 
 class Armor(Equipment):
 
-    def __init__(self, name: str, taken_capacity: int, defence: int):
+    def __init__(self, name: str, taken_capacity: int, armor_type: str, defence: int):
         super().__init__(name, taken_capacity)
         validate_attribute(attribute=defence,
                            min_val=armor_defence_values.get("min_val"),
                            max_val=armor_defence_values.get("max_val"),
                            message=armor_data_messages.get("defense_error_message"))
+        self.armor_type = armor_type
         self.defence = defence
 
     def action(self) -> int or float:
@@ -105,7 +108,7 @@ class Armor(Equipment):
     def __str__(self) -> str:
         armor_characteristics = f"{equipment_header_characteristic.get(ARMOR_EQUIPMENT_TYPE)}" \
                                 f"{super().__str__()}" \
-                                f"{armor_data_messages.get('info_message').format(self.defence)}"
+                                f"{armor_data_messages.get('info_message').format(self.armor_type, self.defence)}"
         return armor_characteristics
 
 

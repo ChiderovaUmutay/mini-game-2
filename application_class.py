@@ -31,6 +31,7 @@ from helpers.variables import taken_capacity_values, \
     ship_weapon_slot_values, \
     ship_armor_slot_values, \
     ship_navigation_slot_values, \
+    equipments_types, \
     WEAPON_EQUIPMENT_TYPE, \
     ARMOR_EQUIPMENT_TYPE, \
     NAVIGATOR_EQUIPMENT_TYPE
@@ -60,11 +61,13 @@ class Application:
     def create_weapon(self, names_list):
         weapon_name = choice(names_list)
         names_list.remove(weapon_name)
+        weapon_type = choice(equipments_types)
         taken_capacity = self.get_taken_capacity_random_value()
         min_damage = self.get_equipment_parameter_random_value(weapon_damage_values)
         critical_hit_chance = self.get_equipment_parameter_random_value(weapon_critical_hit_values)
         weapon = Weapon(name=weapon_name,
                         taken_capacity=taken_capacity,
+                        weapon_type=weapon_type,
                         min_damage=min_damage,
                         critical_hit_chance=critical_hit_chance)
         display(weapon.__str__())
@@ -74,9 +77,10 @@ class Application:
     def create_armor(self, names_list):
         armor_name = choice(names_list)
         names_list.remove(armor_name)
+        armor_type = choice(equipments_types)
         taken_capacity = self.get_taken_capacity_random_value()
         defence = self.get_equipment_parameter_random_value(armor_defence_values)
-        armor = Armor(name=armor_name, taken_capacity=taken_capacity, defence=defence)
+        armor = Armor(name=armor_name, taken_capacity=taken_capacity, armor_type=armor_type, defence=defence)
         display(armor.__str__())
         self.armors.append(armor)
         return names_list

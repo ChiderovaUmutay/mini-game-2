@@ -138,3 +138,12 @@ list_of_navigation_names = [
     "SpaceFlow Navigator",
     "QuantumCompass Interface"
 ]
+
+equipments_types = ["Laser",
+                    "Fragmentation",
+                    "Electromagnetic",
+                    "Plasma",
+                    "Ion",
+                    "Missiles",
+                    "Antimatter",
+                    "Disintegration"]
